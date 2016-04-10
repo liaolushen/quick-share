@@ -1,14 +1,25 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>首页</title>
-  </head>
-  <body>
-    <h1>这是首页</h1>
-    <form action="share-upload" method="post" enctype="multipart/form-data">
-      <input type="file" name="file">
-      <input type="submit" value="提交">
-    </form>
-  </body>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>UPLOADER</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="wrapper">
+    <h2 class="ui-title">Submit Your File</h2>
+    <h3 class="ui-subtitle">Note that file size must <= 10MB :)</h3>
+    <button class="ui-button ui-blue" id="upload">上传</button>
+    <div id="drop-area" class="ui-drop-area">
+      <ul id="file-list" class="ui-list">
+        <h3 class="ui-small ui-subtitle">Drag a file here or <a class="ui-link-button" id="browse">browse</a> for a file to upload.</h3>
+      </ul>
+    </div>
+  </div>
+  <div class="ui-mask" id="mask">
+    <div class="ui-alert"></div>
+  </div>
+  <script src="{{ url_for('static', filename='js/flow.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
 </html>

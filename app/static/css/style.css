@@ -1,0 +1,130 @@
+html, body {margin: 0; padding: 0; height: 100%; width: 100%;}
+div {margin: 0; padding: 0;}
+ul { margin: 0; }
+
+.ui-mask {
+  display: none;
+  position: fixed;
+  margin: 0;
+  padding: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,.7);
+}
+
+.ui-alert {
+  position: absolute;
+  background: #fff;
+  border-radius: 4px;
+  box-sizing: border-box;
+  padding: 20px;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0); 
+}
+.ui-blue {
+  border: 1px #4d96ff solid;
+  background: #53abff;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.3), 0 1px 2px rgba(100,100,100,.4);
+  color: #fff;
+}
+
+.ui-button {
+  cursor: pointer;
+  padding: 0 20px;
+  height: 32px;
+  border-radius: 4px;
+  line-height: 32px;
+  -webkit-appearance: none;
+  outline: none;
+  font-weight: bold;
+}
+
+.ui-blue:hover {
+  background: #50a6f2;
+}
+
+.ui-blue:active {
+  background: #50a6f2;
+  box-shadow: none;
+}
+
+.wrapper {
+  width: 600px;
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+.ui-drop-area {
+  height: 400px;
+  width: 100%;
+  border: 2px dashed #ddd;
+}
+
+.ui-title {
+  text-align: center;
+  color: rgb(117, 129, 157);
+  margin: 10px 0;
+}
+
+.ui-subtitle {
+  margin: 0;
+  text-align: center;
+  font-weight: normal;
+  font-size: 13px;
+  color: rgb(176, 184, 201);
+}
+
+.ui-small {
+  margin-top: 80px;
+}
+
+.ui-link-button {
+  cursor: pointer;
+  color: rgb(63,165,249);
+}
+
+.ui-list {
+  width: 100%;
+  padding: 0;
+}
+
+.ui-list-item {
+  overflow: hidden;
+  width: 100%;
+  list-style: none;
+  border-bottom: 1px solid #eee;
+  box-sizing: border-box;
+  padding: 10px 0 7px 40px;
+}
+
+.ui-item-name {
+  display: block;
+  color: #333;
+  font-size: 13px;
+}
+
+.ui-item-addition {
+  display: block;
+  font-size: 13px;
+  color: #aaa;
+}
+
+.ui-item-icon {
+  float: left;
+  margin-left: -30px;
+  width: 30px;
+}
+
+.ui-item-icon img {
+  width: 100%;
+}
+.ui-item-right {
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding-left: 20px;
+}

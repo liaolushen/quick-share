@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
+"""
+该文件用于定义一些通用的函数
+"""
 import random
-from app.mod_share.models import File
 
 
 def get_file_format(filename):
@@ -26,6 +28,7 @@ def generate_file_id():
     生成随机8位数字用作文件的id，且是数据库中已存在id
     """
     file_id = random.randint(10000000, 99999999)
+    from models.share_mod import File
     while File.query.get(file_id) != None:
         file_id = random.randint(10000000, 99999999)
     return file_id
