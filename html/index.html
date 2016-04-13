@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>UPLOADER</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <script src="flow.js"></script>
+  <script src="vue.js"></script>
+
+  <div id="app">
+    <div class="ui-header">
+      <div class="ui-header-wp">
+        <h1 class="logo">SHARE</h1>
+      </div>
+    </div>
+    <div class="ui-body">
+      <div class="wrapper">
+        <div class="ui-left-col">
+          <div id="drop-area" class="ui-drop-area">
+              <h3 class="ui-small ui-subtitle">Drag a file here or <a class="ui-link-button" id="browse">browse</a> for a file to upload.</h3>
+          </div>
+        </div>
+        <div class="ui-right-col">
+          <file-list v-ref:list></file-list>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
