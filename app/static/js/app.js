@@ -1,162 +1,96 @@
-(function(w, d) {
-
-/**
- * Custom alert window. Just a util class.
- * Single Instance.
- */
-var Alert = (function(){
-  var ele = d.getElementById('mask');
-  var all = ele.getElementsByTagName('div')[0]; // alert
-
-  function _show() { ele.style.display = 'block'; }
-  function _hide() { ele.style.display = 'none'; }
-
-  ele.addEventListener('click', _hide);
-
-  return {
-    alert: function(text) {
-      all.innerHTML = text;
-      _show();
-    }
-  };
-
-}());
-
-var token = (''+Date.now());
-
-var alert = function(txt) {Alert.alert(txt);}; // override native alert function.
-
-// alert('使用了 Flow.js，见 Github。');
-
 var flow = new Flow({
   target: '/upload', // target path
   simultaneousUploads: 1,
-  speedSmoothingFactor: 0.02,
   query: {
-    'groupCode': token
+    groupCode: Date.now()
   }
-
 });
 
+/********** File Item Component *************/
+var fileItemTpl = '' +
+'<li class="ui-list-item">' +
+'  <div class="ui-item-icon"><img src="static/img/file-{{format}}.png"></div>' +
+'  <div class="ui-item-right">' +
+'  <span class="ui-item-name">{{file.name}}</span>' +
+'  <span class="ui-item-addition">{{isShow ? speed + "/s  ": ""}}{{size}}</span>' +
+'  <div :class="{\'ui-progress\': true, \'ui-show\': isShow}"><div class="ui-active-prog" style="width: {{progress}}"></div></div>' +
+'  <button class="ui-transparent" v-on:click="removeSelf">X</button>' +
+'</li>';
 
-
-if (!flow.support) {
-  alert('Your browser does not support!');
-}
-
-
-/**
- * Item is a class for each file.
- * @param file {FlowFile}
- */
-var Item = function(file) {
-  this.filename = file.name;
-  this.size = file.size;
-  this.format = Item.getFormat(this.filename);
-};
-
-/**
- * @return {String} HTML rendered with meta data of file.
- */
-Item.prototype.getHTML = function() {
-  var result = '' +
-    '<li class="ui-list-item">' +
-    '<div class="ui-item-icon">' +
-    '  <img src="static/img/file-' + this.format + '.png">' +
-    '</div>' +
-    '<div class="ui-item-right">' +
-    '  <span class="ui-item-name">' + this.filename + '</span>' +
-    '  <span class="ui-item-addition">' + Item.formatSize(this.size) + '</span>' +
-    '</div>'
-    '</li>';
-  return result;
-};
-
-/**
- * Static method. Return size formated with 'KB' or 'MB'.
- * @param siz
- e {Number} size in unit of Byte.
- * @return {String} formated size with unit of 'KB' or 'MB'.
- */
-Item.formatSize = function(size) {
-  var res;
-  var MB = 1000*1000, KB = 1000;
-  if (size > MB) {
-    res = Math.round(size / MB) + ' MB';
-  } else if (size > KB) {
-    res = Math.round(size / KB) + ' KB';
+var FileItem = Vue.extend({
+  template: fileItemTpl,
+  props: ['file', 'index'],
+  computed: {
+    isShow: function() {
+      // 进度条为0或100%时不显示
+      return this.file.progress() > 0 && this.file.progress() < 1;
+    },
+    size: function() {
+      return this.trans(this.file.size);
+    },
+    speed: function() {
+      return this.trans(this.file.averageSpeed);
+    },
+    progress: function() {
+      return this.file.progress() * 100 + '%';
+    },
+    format: function() {
+      var rformat = this.file.name.split('').reverse().join('').split('.')[0];
+      return rformat.split('').reverse().join('');
+    }
+  },
+  methods: {
+    trans: function(size) {
+      var MB = 1000*1000, KB = 1000;
+      if (+size > MB) {
+        return Math.round(+size / MB) + ' MB';
+      } else if (+size > KB) {
+        return Math.round(+size / KB) + ' KB';
+      }
+      return +size + ' B';
+    },
+    removeSelf: function() {
+      this.$dispatch('remove', this.index);
+    }
   }
-  return res;
-};
+});
 
-Item.getFormat = function(filename) {
-  var rformat = filename.split('').reverse().join('').split('.')[0];
-  return rformat.split('').reverse().join('');
-};
+Vue.component('file-item', FileItem);
 
-/**
- * List is a class for store file items.
- * @param ele {HTMLElement} list element.
- */
-var List = function(ele) {
-  this.ele = ele;
-  this.data = []; // type is Item
-};
+/********** File List Component *************/
+var fileListTpl = '' +
+'<ul class="ui-list">' +
+'  <file-item v-for="item in items" :file="item" :index="$index" v-on:remove="remove""></file-item>' +
+'</ul>';
 
-/**
- * Add an item to the list instance.
- * @param item {Item} The item you want to add.
- */
-List.prototype.add = function(item) {
-  this.data.push(item);
-  this.update();
-};
-
-/**
- * Update the user interface.
- */
-List.prototype.update = function() {
-  var itemsHTML = '';
-  for (var i = 0, len = this.data.length; i < len; i++) {
-    itemsHTML += this.data[i].getHTML();
+var FileList = Vue.extend({
+  template: fileListTpl,
+  data: function() {
+    return { items: [], progresses: []}
+  },
+  methods: {
+    add: function(file) {
+      this.items.push(file);
+    },
+    remove: function(index) {
+      this.items.splice(index, 1);
+    }
   }
-  this.ele.innerHTML = itemsHTML;
-};
+});
 
-List.prototype.remove = function() {
-  // @todo
-};
+Vue.component('file-list', FileList);
 
-var fileList = new List(d.getElementById('file-list'));
-var uploadBtn = d.getElementById('upload');
 
-flow.assignBrowse(d.getElementById('browse'));
-flow.assignDrop(d.getElementById('drop-area'));
+/********** Main Component *************/
+var main = new Vue({el: '#app'});
 
-flow.on('fileAdded', function(file, event){
-  var fileItem = new Item(file);
-  fileList.add(fileItem);
-  console.log(file, event);
+flow.assignBrowse(document.querySelector('#browse'));
+flow.assignDrop(document.getElementById('drop-area'));
+
+flow.on('fileAdded', function(file, event) {
+  main.$refs.list.add(file);
 });
 
 flow.on('filesSubmitted', function(file, event) {
   flow.upload();
-})
-
-flow.on('fileSuccess', function(file,message){
-  console.log(file,message);
 });
-
-flow.on('fileError', function(file, message){
-  console.log(file, message);
-});
-
-flow.on('catchAll', function(event) {
-  console.log('catchAll', arguments);
-})
-
-uploadBtn.addEventListener('click', function(e) {
-
-});
-
-}(window, document));

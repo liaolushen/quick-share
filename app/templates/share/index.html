@@ -6,20 +6,29 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-  <div class="wrapper">
-    <h2 class="ui-title">Submit Your File</h2>
-    <h3 class="ui-subtitle">Note that file size must <= 10MB :)</h3>
-    <button class="ui-button ui-blue" id="upload">上传</button>
-    <div id="drop-area" class="ui-drop-area">
-      <ul id="file-list" class="ui-list">
-        <h3 class="ui-small ui-subtitle">Drag a file here or <a class="ui-link-button" id="browse">browse</a> for a file to upload.</h3>
-      </ul>
+  <script src="{{ url_for('static', filename='js/flow.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/vue.js') }}"></script>
+
+  <div id="app">
+    <div class="ui-header">
+      <div class="ui-header-wp">
+        <h1 class="logo">SHARE</h1>
+        <button>生成</button>
+      </div>
+    </div>
+    <div class="ui-body">
+      <div class="wrapper">
+        <div class="ui-left-col">
+          <div id="drop-area" class="ui-drop-area">
+              <h3 class="ui-small ui-subtitle">Drag a file here or <a class="ui-link-button" id="browse">browse</a> for a file to upload.</h3>
+          </div>
+        </div>
+        <div class="ui-right-col">
+          <file-list v-ref:list></file-list>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="ui-mask" id="mask">
-    <div class="ui-alert"></div>
-  </div>
-  <script src="{{ url_for('static', filename='js/flow.js') }}"></script>
   <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
 </html>

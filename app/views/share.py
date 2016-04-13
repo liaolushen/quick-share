@@ -18,33 +18,32 @@ def index():
 @share.route('/upload', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'GET':
-        content = "begin transport"
-        return content, status.HTTP_204_NO_CONTENT
+        if request.args.get('flowChunkNumber') == '1':
+            q_result = TmpFileMap.query.get(request.args.get('flowIdentifier'))
+            if not q_result:
+                db.session.add(
+                    TmpFileMap(
+                        request.args.get('flowIdentifier'),
+                        request.args.get('flowFilename'),
+                        int(request.args.get('flowTotalSize')),
+                        0,
+                        0,
+                        int(request.args.get('groupCode')),
+                    )
+                )
+                db.session.commit()
+        return "Ready for content", status.HTTP_204_NO_CONTENT
     elif request.method == 'POST':
         file_chunk = request.files['file'].read()
         q_result = TmpFileMap.query.get(request.form['flowIdentifier'])
-        if not q_result and int(request.form['flowChunkNumber']) == 1:
-            db.session.add(
-                TmpFileMap(
-                    request.form['flowIdentifier'],
-                    request.form['flowFilename'],
-                    int(request.form['flowTotalSize']),
-                    int(request.form['flowCurrentChunkSize']),
-                    int(request.form['flowChunkNumber']),
-                    int(request.form['groupCode']),
-                )
-            )
-            with open(os.path.join(app.config['TMP_UPLOAD_FOLDER'],
-                      request.form['flowIdentifier']), 'w') as f:
-                f.write(file_chunk)
-        elif q_result and q_result.current_chunk + 1\
+        if q_result.current_chunk + 1\
                 == int(request.form['flowChunkNumber']):
             q_result.current_size += int(request.form['flowCurrentChunkSize'])
             q_result.current_chunk += 1
             with open(os.path.join(app.config['TMP_UPLOAD_FOLDER'],
                       request.form['flowIdentifier']), 'a') as f:
                 f.write(file_chunk)
-        if q_result and q_result.current_size == q_result.total_size:
+        if q_result.current_size == q_result.total_size:
             file_id = generate_random_hash()
             db.session.add(
                 File(
@@ -54,6 +53,8 @@ def upload_file():
                     q_result.group_code,
                 )
             )
+            print os.path.join(app.config['TMP_UPLOAD_FOLDER'],
+                               q_result.id)
             os.rename(
                 os.path.join(app.config['TMP_UPLOAD_FOLDER'],
                              q_result.id),
