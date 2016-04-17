@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 import os
-from flask import Blueprint, request, render_template, redirect,\
-                    url_for, session, send_from_directory
+from flask import Blueprint, request, render_template,\
+                    url_for, send_from_directory
 from flask.ext.api import status
 from app import app, db
 from app.common import get_file_format, generate_random_hash,\
-                                generate_file_id
+                                generate_random_num_str
 from app.models.share_mod import TmpFileMap, File
 share = Blueprint('share', __name__)
 
@@ -23,12 +23,12 @@ def upload_file():
             if not q_result:
                 db.session.add(
                     TmpFileMap(
-                        request.args.get('flowIdentifier'),
-                        request.args.get('flowFilename'),
-                        int(request.args.get('flowTotalSize')),
-                        0,
-                        0,
-                        int(request.args.get('groupCode')),
+                        file_identifer=request.args.get('flowIdentifier'),
+                        file_name=request.args.get('flowFilename'),
+                        total_size=int(request.args.get('flowTotalSize')),
+                        current_size=0,
+                        current_chunk=0,
+                        group_code=int(request.args.get('groupCode')),
                     )
                 )
                 db.session.commit()
@@ -45,12 +45,13 @@ def upload_file():
                 f.write(file_chunk)
         if q_result.current_size == q_result.total_size:
             file_id = generate_random_hash()
+            File()
             db.session.add(
                 File(
-                    file_id,
-                    q_result.file_name,
-                    q_result.file_format,
-                    q_result.group_code,
+                    file_id=file_id,
+                    file_name=q_result.file_name,
+                    file_format=q_result.file_format,
+                    group_code=q_result.group_code,
                 )
             )
             print os.path.join(app.config['TMP_UPLOAD_FOLDER'],

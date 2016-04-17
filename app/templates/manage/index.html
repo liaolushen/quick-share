@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>管理员首页</title>
+</head>
+<body>
+  <h1>Welcome, {{ manager_email }}</h1>
+  <form action="/manage/create-room" method="post">
+    房间名字：<input type="text" name="room_name" value="">
+    <input type="submit" value="提交">
+  </form>
+</body>
+</html>

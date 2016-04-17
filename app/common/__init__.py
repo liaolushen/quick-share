@@ -23,12 +23,11 @@ def generate_random_hash():
     return "%032x" % hash
 
 
-def generate_file_id():
+def generate_random_num_str(n):
     """
-    生成随机8位数字用作文件的id，且是数据库中已存在id
+    生成n位随机数字字符串
     """
-    file_id = random.randint(10000000, 99999999)
-    from models.share_mod import File
-    while File.query.get(file_id) != None:
-        file_id = random.randint(10000000, 99999999)
-    return file_id
+    result_num = ""
+    for i in range(n):
+        result_num += str(random.randint(0, 9))
+    return result_num

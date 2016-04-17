@@ -13,8 +13,8 @@ class File(db.Model):
     file_format = db.Column(db.String(50), nullable=False)
     group_code = db.Column(db.String(128))
 
-    def __init__(self, file_code, file_name, file_format, group_code):
-        self.id = file_code
+    def __init__(self, file_id, file_name, file_format, group_code):
+        self.id = file_id
         self.file_name = file_name
         self.file_format = file_format
         self.group_code = group_code
