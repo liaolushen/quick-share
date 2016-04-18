@@ -5,15 +5,15 @@ from flask import Flask, render_template, redirect, request, url_for,\
                   session
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.api import status
+from flask_socketio import SocketIO
+
 
 # Define the WSGI application object
 app = Flask(__name__)
-
-# config
 app.config.from_object('config.DevelopmentConfig')
 
+socketio = SocketIO(app)
 db = SQLAlchemy(app)
-
 
 # Sample HTTP error handling
 @app.errorhandler(404)
@@ -38,6 +38,4 @@ def index():
     else:
         return redirect(url_for('manage.login'))
 
-
-# Build the database:
 db.create_all()

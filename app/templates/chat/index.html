@@ -3,8 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <title>{{ data['room_name'] }}</title>
+  <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
+  <script type="text/javascript" charset="utf-8">
+      var socket
+      $(document).ready(function(){
+          namespace = '/chat'; // change to an empty string to use the global namespace
+
+          // the socket.io documentation recommends sending an explicit package upon connection
+          // this is specially important when using the global namespace
+          socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
+
+
+          // 新连接处理
+          socket.on('connect', function() {
+              socket.emit('join', {room_id: "{{ data['room_id'] }}", nick_name: "{{ data['nick_name'] }}" });
+          });
+
+
+          // 处理用户数目变化
+          socket.on('user update', function(msg) {
+              $('#user-num').html(msg.user_num);
+              $('#log').append('<br>' + $('<div/>').text(msg.info).html());
+          })
+
+          // 处理新消息
+          socket.on('new message', function(msg) {
+              $('#log').append('<br>' + $('<div/>').text(msg.info).html());
+          });
+
+          // 发送新消息
+          $('#send').click(function(event) {
+              socket.emit('new message', {room_id: "{{ data['room_id'] }}", msg: $('#message').val()})
+          })
+      });
+      window.onbeforeunload = function() {
+          socket.emit('leave', {room_id: "{{ data['room_id'] }}", nick_name: "{{ data['nick_name'] }}" });
+      }
+  </script>
 </head>
 <body>
-  <h1>欢迎来到房间{{ data['room_id'] }}</h1>
+  <h1>{{ data['nick_name'] }}!欢迎来到房间{{ data['room_id'] }}， 当前在线人数<span id='user-num'>0</span></h1>
+  <input type="text" id="message" value="">
+  <input type="button" id="send" value="发送">
+  <h2>我的消息框:</h2>
+  <div id="log"></div>
 </body>
 </html>

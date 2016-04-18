@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from flask import Blueprint, request, render_template, redirect,\
-                    url_for, session
+                    url_for, session, current_app
 from flask.ext.api import status
 from app import app, db
 from app.common import generate_random_num_str
@@ -48,4 +48,7 @@ def create_room():
         )
     )
     db.session.commit()
+    current_app.config[new_room_id] = {
+        'current_user_num': 0
+    }
     return request.url_root + "chat/" + new_room_id
