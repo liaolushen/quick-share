@@ -9,8 +9,8 @@ class Config(object):
     UPLOAD_FOLDER = '/tmp/uploads'
     TMP_UPLOAD_FOLDER = '/tmp/uploads/tmp'
     SQLALCHEMY_TRACK_MODIFICATIONS = True
-    ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
     SQLALCHEMY_DATABASE_URI = 'sqlite://'
+    SECRET_KEY = 'CAN YOU GUESS ME?'
 
 
 class ProductionConfig(Config):
