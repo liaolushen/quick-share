@@ -89,3 +89,5 @@ ENV/
 
 # Configure file
 config.py
+
+html/node_modules

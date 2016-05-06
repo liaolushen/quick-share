@@ -1,29 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>UPLOADER</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <script src="flow.js"></script>
-  <script src="vue.js"></script>
-
-  <div id="app">
-    <ui-header page="index"></ui-header>
-    <div class="ui-body">
-      <div class="wrapper">
-        <div class="ui-left-col">
-          <div id="drop-area" class="ui-drop-area">
-              <h3 class="ui-small ui-subtitle">Drag a file here or <a class="ui-link-button" id="browse">browse</a> for a file to upload.</h3>
-          </div>
-        </div>
-        <div class="ui-right-col">
-          <file-list v-ref:list></file-list>
-        </div>
-      </div>
-    </div>
-  </div>
-  <script src="app.js"></script>
-</body>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>JustLearn</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="static/qrcode.js"></script>
+    <!-- built files will be auto injected -->
+  </body>
 </html>
