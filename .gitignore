@@ -90,4 +90,5 @@ ENV/
 # Configure file
 config.py
 
+# front-end
 html/node_modules
