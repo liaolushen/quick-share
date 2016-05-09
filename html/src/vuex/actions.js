@@ -5,7 +5,3 @@ export const addOne = ({ dispatch }) => {
 export const sendMessage = ({ dispatch }, message) => {
   dispatch('SEND_MESSAGE', message);
 };
-
-export const updatePadding = ({ dispatch }, newVal) => {
-  dispatch('UPDATE_PADDING', newVal);
-};

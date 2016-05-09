@@ -1,1 +1,0 @@
-export const getPadding = (state) => state.padding

@@ -9,7 +9,7 @@
 
 <template>
 <div class="view-page">
-  <div id="msg-list" class="msg-list" v-bind:style="{paddingBottom: padding + 'px'}" v-el:list>
+  <div id="msg-list" class="msg-list" style="padding-bottom: 70px;" v-el:list>
     <a v-link="{path:'/prop'}">GO</a>
     <message v-for="message in messages" :role="message.role" :name="message.name" :content="message.content"></message>
   </div>
@@ -22,26 +22,21 @@
 import Message from './Message'
 import MyInput from './Input'
 
-import { getPadding } from '../vuex/getters';
-
 export default {
   data() {
     return {}
   },
   vuex: {
     getters: {
-      padding: getPadding,
       messages: state => state.messages
     }
   },
   watch: {
-    'padding': function(old, val) {
-      const msgList = this.$els.list;
-      msgList.scrollTop = msgList.scrollHeight;
-    },
     'messages': function(old, val) {
       const msgList = this.$els.list;
+
       msgList.scrollTop = msgList.scrollHeight;
+      console.log(msgList.scrollTop, msgList.scrollHeight);
     }
   },
   components: {

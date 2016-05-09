@@ -102,47 +102,38 @@
 </style>
 
 <template>
-  <div class="input-wrapper" v-bind:style="{height: wrapperHeight}">
+  <div class="input-wrapper">
     <div class="test">{{test}}</div>
     <div class="left">hello</div>
     <div class="right">
       <x-button text="发送" type="primary" @click="send"></x-button>
     </div>
     <div class="main">
-    <div class="textarea-wrapper">
-      <textarea id="input-text" class="flex-textarea" @focus="triggle" @blur="triggle" @input="updateContent" v-bind:style="{height: maxHeight +'px'}">{{content}}</textarea>
+      <div class="textarea-wrapper">
+        <textarea id="input-text" class="flex-textarea" @focus="triggle" @blur="triggle" @input="updateContent" v-bind:style="{height: maxHeight +'px'}">{{content}}</textarea>
+      </div>
+      <textarea id="fate-text" class="fate-textarea">{{content}}</textarea>
     </div>
-    <textarea id="fate-text" class="fate-textarea">{{content}}</textarea>
-      
-      
-    </div>
-    <div class="comp" v-show="isShow"></div>
   </div>
 </template>
 
 <script>
 import { sendMessage } from '../vuex/actions';
-import { updatePadding } from '../vuex/actions';
 import { XButton } from 'vux'
-import { getPadding } from '../vuex/getters';
 
 export default {
   components: {
     XButton
   },
   vuex: {
-    getters: {
-      getPadding
-    },
     actions: {
-      updatePadding,
       sendMessage
     }
   },
   data() {
     console.log(XButton);
     return {
-      isShow: false,
+      isShow: true,
       test: '',
       content: '',
       maxHeight: 40,
@@ -160,15 +151,9 @@ export default {
       const flexOne = this.$el.querySelector('#input-text');
       const fateOne = this.$el.querySelector('#fate-text');
       this.maxHeight = fateOne.scrollHeight;
-      this.updatePad();
-
     }
   },
   methods: {
-    updatePad() {
-      let pad = this.isShow ? this.maxHeight + 280 : this.maxHeight + 10;
-      this.updatePadding(pad);
-    },
     updateContent(e) {
       this.content = e.target.value;
       this.test = screen.height;
@@ -179,7 +164,6 @@ export default {
     },
     triggle() {
       this.isShow = !this.isShow;
-      this.updatePad();
     }
   }
 }

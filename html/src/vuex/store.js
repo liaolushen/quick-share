@@ -8,7 +8,6 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     test: 0,
-    padding: 70,
     messages: [
       {role: 'self', name: '我自己', content: 'hello'},
       {role: 'self', name: '我自己', content: 'hello'},
