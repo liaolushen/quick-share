@@ -6,15 +6,24 @@
   background-color: black;
   color: #fff;
 }
-.input-wrapper {
+.bottom-area {
   position: fixed;
   bottom: 0;
   left: 0;
-  width: 100%;
-  height: 50px;
+  right: 0;
   background-color: rgb(244,244,247);
+}
+
+.bottom-area.backdrop-blur {
+  backdrop-filter: blur(10px);
+  background-color: rgba(244,244,247, .4);
+}
+.input-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 50px;
   box-sizing: border-box;
-  padding: 0 70px 0 30px;    
+  padding: 0 70px 0 34px;    
 }
 
 .input-wrapper:before {
@@ -32,19 +41,24 @@
 }
 
 .left {
+  position: relative;
+  box-sizing: border-box;
+  height: 100%;
   float: left;
-  width: 30px;
-  margin-left: -30px;
+  width: 34px;
+  margin-left: -34px;
 }
 
 .main {
-  width: 100%;
-  position: relative;
+  position: absolute;
+  left: 37px;
+  right: 70px;
   box-sizing: border-box;
   padding: 5px 5px 5px 7px;
 }
 
 .right {
+  position: relative;
   float: right;
   width: 70px;
   margin-right: -70px;
@@ -89,41 +103,76 @@
   height: 270px;
 }
 
+
 .weui_btn {
+  position: absolute;
   font-size: 14px;
   line-height: 40px;
-  
+  bottom: 6px;
+  right: 5px;
+  left: 0;
 }
 
 .weui_btn_primary {
   background-color: rgb(78, 146, 223);
 }
 
+.ui-emotion {
+  position: absolute;
+  bottom: 0;
+  display: block;
+  width: 100%;
+  height: 50px;
+  background-image: url("../assets/emotion.png");
+  background-size: 90%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  outline: none;
+}
+
+.emotion-picker {
+  overflow: hidden;
+  height: 220px;
+  width: 100%;
+  background: rgb(246,246,246);
+}
 </style>
 
 <template>
-  <div class="input-wrapper">
-    <div class="test">{{test}}</div>
-    <div class="left">hello</div>
-    <div class="right">
-      <x-button text="发送" type="primary" @click="send"></x-button>
+  <div class="bottom-area">
+    <div class="emotion-picker" v-bind:style="{height: emotionAreaHeight + 'px'}">
+      <emotion-picker></emotion-picker>
     </div>
-    <div class="main">
-      <div class="textarea-wrapper">
-        <textarea id="input-text" class="flex-textarea" @focus="triggle" @blur="triggle" @input="updateContent" v-bind:style="{height: maxHeight +'px'}">{{content}}</textarea>
+    <div class="input-wrapper" v-bind:style="{height: maxHeight + 10 + 'px'}">
+      <div class="left">
+        <button class="ui-emotion" @click="triggleEmotion"></button>
       </div>
-      <textarea id="fate-text" class="fate-textarea">{{content}}</textarea>
+      <div class="right">
+        <x-button text="发送" type="primary" @click="send"></x-button>
+      </div>
+      <div class="main">
+        <div class="textarea-wrapper">
+          <textarea id="input-text" class="flex-textarea" @focus="focus" @input="updateContent" v-bind:style="{height: maxHeight +'px'}" v-el:realinput>{{content}}</textarea>
+        </div>
+        <textarea id="fate-text" class="fate-textarea" v-el:fateinput>{{content}}</textarea>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { XButton } from 'vux';
+
 import { sendMessage } from '../vuex/actions';
-import { XButton } from 'vux'
+import EmotionPicker from './EmotionPicker';
 
 export default {
   components: {
-    XButton
+    XButton,
+    EmotionPicker
   },
   vuex: {
     actions: {
@@ -133,37 +182,43 @@ export default {
   data() {
     console.log(XButton);
     return {
-      isShow: true,
-      test: '',
       content: '',
       maxHeight: 40,
-    }
-  },
-  computed: {
-    wrapperHeight() {
-      return this.isShow ? 
-             this.maxHeight + 280 + 'px':
-             this.maxHeight + 10 + 'px';
+      isEmotionShow: false
     }
   },
   watch: {
     'content': function(val, oldVal) {
-      const flexOne = this.$el.querySelector('#input-text');
-      const fateOne = this.$el.querySelector('#fate-text');
+      const flexOne = this.$els.realinput;
+      const fateOne = this.$els.fateinput;
       this.maxHeight = fateOne.scrollHeight;
+    }
+  },
+  events: {
+    'insert': function(emo) {
+      this.content += ` \\${emo} `
+    }
+  },
+  computed: {
+    emotionAreaHeight() {
+      return this.isEmotionShow ? 220 : 0;
     }
   },
   methods: {
     updateContent(e) {
       this.content = e.target.value;
-      this.test = screen.height;
+    },
+    triggleEmotion() {
+      this.isEmotionShow = !this.isEmotionShow
     },
     send() {
+      if (this.content.length <= 0) return;
+      this.isEmotionShow = false;
       this.sendMessage({'content': this.content, 'name': 'wo', 'role': 'self'});
       this.content = '';
     },
-    triggle() {
-      this.isShow = !this.isShow;
+    focus() {
+      this.isEmotionShow = false;
     }
   }
 }

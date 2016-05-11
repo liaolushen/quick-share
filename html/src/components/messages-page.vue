@@ -5,12 +5,26 @@
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 }
+
+.transparent-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  color: #fff;
+  z-index: 999;
+  text-align: center;
+  background-color: rgba(0,0,0,.6);
+}
 </style>
 
 <template>
 <div class="view-page">
+  <a class="transparent-button" v-link="{path:'/prop'}">...</a>
   <div id="msg-list" class="msg-list" style="padding-bottom: 70px;" v-el:list>
-    <a v-link="{path:'/prop'}">GO</a>
+
     <message v-for="message in messages" :role="message.role" :name="message.name" :content="message.content"></message>
   </div>
   <my-input></my-input>
