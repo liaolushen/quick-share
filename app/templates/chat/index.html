@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>{{ data['room_name'] }}</title>
+  <title>{{ room_id }}</title>
   <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
   <script type="text/javascript" charset="utf-8">
@@ -17,33 +17,39 @@
 
           // 新连接处理
           socket.on('connect', function() {
-              socket.emit('join', {room_id: "{{ data['room_id'] }}", nick_name: "{{ data['nick_name'] }}" });
+              socket.emit('join room', {room_id: "{{ room_id }}"});
           });
+
+          // 处理系统消息
+          socket.on('system message', function(message) {
+              $('#log').append('<br>' + $('<div/>').text(message.content).html());
+          })
 
 
           // 处理用户数目变化
-          socket.on('user update', function(msg) {
-              $('#user-num').html(msg.user_num);
-              $('#log').append('<br>' + $('<div/>').text(msg.info).html());
+          socket.on('user update', function(message) {
+              $('#user-num').html(message.nick_name);
+              $('#log').append('<br>' + $('<div/>').text(message.uid).html());
           })
 
           // 处理新消息
-          socket.on('new message', function(msg) {
-              $('#log').append('<br>' + $('<div/>').text(msg.info).html());
+          socket.on('user message', function(message) {
+              $('#log').append('<br>' + $('<div/>').text(message.nick_name + ':' + message.content + '(' + message.message_time * 1000 + ')').html());
           });
 
           // 发送新消息
           $('#send').click(function(event) {
-              socket.emit('new message', {room_id: "{{ data['room_id'] }}", msg: $('#message').val()})
+              var current_time = new Date().getTime();
+              socket.emit('user message', {room_id: "{{ room_id}}", content: $('#message').val(), message_time: current_time});
           })
       });
       window.onbeforeunload = function() {
-          socket.emit('leave', {room_id: "{{ data['room_id'] }}", nick_name: "{{ data['nick_name'] }}" });
+          socket.emit('leave room', {room_id: "{{ room_id }}" });
       }
   </script>
 </head>
 <body>
-  <h1>{{ data['nick_name'] }}!欢迎来到房间{{ data['room_id'] }}， 当前在线人数<span id='user-num'>0</span></h1>
+  <h1>欢迎来到房间{{ room_id }}， 当前在线人数<span id='user-num'>0</span></h1>
   <input type="text" id="message" value="">
   <input type="button" id="send" value="发送">
   <h2>我的消息框:</h2>

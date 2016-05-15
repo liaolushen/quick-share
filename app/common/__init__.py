@@ -3,6 +3,7 @@
 该文件用于定义一些通用的函数
 """
 import random
+import json
 
 
 def get_file_format(filename):
@@ -31,3 +32,19 @@ def generate_random_num_str(n):
     for i in range(n):
         result_num += str(random.randint(0, 9))
     return result_num
+
+def api_format(status_code, status_info, data={}):
+    """
+    格式化api接口输出，统一输出格式为
+    {
+        'status_code': xxx,
+        'status_info': xxx,
+        'data': xxx
+    }
+    """
+    result = {
+        'status_code': status_code,
+        'status_info': status_info,
+        'data': data
+    }
+    return result

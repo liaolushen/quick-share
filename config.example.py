@@ -9,7 +9,6 @@ class Config(object):
     UPLOAD_FOLDER = '/tmp/uploads'
     TMP_UPLOAD_FOLDER = '/tmp/uploads/tmp'
     SQLALCHEMY_TRACK_MODIFICATIONS = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite://'
     SECRET_KEY = 'CAN YOU GUESS ME?'
 
 
@@ -19,4 +18,10 @@ class ProductionConfig(Config):
 
 class DevelopmentConfig(Config):
     # Upload file
+    SQLALCHEMY_DATABASE_URI = 'sqlite://'
     DEBUG = True
+
+    # redis config
+    REDIS_HOST = 'localhost'
+    REDIS_PORT = 6379
+    REDIS_DB = 0

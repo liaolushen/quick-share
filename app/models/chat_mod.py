@@ -4,18 +4,46 @@ from app import db
 
 class Room(db.Model):
     """
-    文件的存储类
+    聊天室类
     """
     __tablename__ = 'chat_room'
     id = db.Column(db.String(10), primary_key=True)
-    room_name = db.Column(db.String(150), nullable=False)
-    room_manager = db.Column(db.String(150), nullable=False)
+    name = db.Column(db.String(150), nullable=False)
+    start_time = db.Column(db.DateTime)
+    end_time = db.Column(db.DateTime)
+    manager_id = db.Column(db.Integer, db.ForeignKey('manager.id'))
 
-    def __init__(self, room_id, room_name, room_manager):
+    def __init__(self, room_id, room_name, start_time, end_time, manager_id):
         self.id = room_id
-        self.room_name = room_name
-        self.room_manager = room_manager
+        self.name = room_name
+        self.start_time = start_time
+        self.end_time = end_time
+        self.manager_id = manager_id
 
     def __repr__(self):
         return 'File(id=%s, room_manager=%s)'\
             % (self.id, self.room_manager)
+
+
+class Message(db.Model):
+    """
+    聊天记录类
+    """
+    __tablename__ = 'chat_message'
+    id = db.Column(db.Integer, primary_key=True)
+    message_time = db.Column(db.DateTime)
+    content = db.Column(db.TEXT)
+    uid = db.Column(db.String(80))
+    nick_name = db.Column(db.String(100))
+    room_id = db.Column(db.String(10), db.ForeignKey('chat_room.id'))
+
+    def __init__(self, message_time, content, uid, nick_name, room_id):
+        self.message_time = message_time
+        self.content = content
+        self.uid = uid
+        self.nick_name = nick_name
+        self.room_id = room_id
+
+    def __repr__(self):
+        return 'Message(id=%d, uid=%s, room_id=%s)'\
+            % (self.id, self.uid, self.room_id)

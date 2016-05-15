@@ -7,7 +7,7 @@ from app import app, db
 from app.common import get_file_format, generate_random_hash,\
                                 generate_random_num_str
 from app.models.share_mod import TmpFileMap, File
-share = Blueprint('share', __name__)
+share = Blueprint('view_share', __name__)
 
 
 @share.route('/', methods=['GET'])
