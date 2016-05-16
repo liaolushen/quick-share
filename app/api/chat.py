@@ -23,6 +23,21 @@ def create_name():
         uid: the user_id to identify the user
         nick_name: the user's nick_name
     """
+    # json_content = request.get_json()
+    # if 'uid' not in session:
+    #     session['uid'] = str(uuid.uuid4())
+    # nick_name = json_content['nick_name']
+    # room_id = json_content['room_id']
+    # room = Room.query.get(room_id)
+    # if room is None:
+    #     session.pop(room_id, None)
+    #     return jsonify(api_format(status.HTTP_404_NOT_FOUND, "no such room"))
+    # session[room_id] = nick_name
+    # redis.hmset(room_id + ':' + session['uid'], {'uid': session['uid'], 'nick_name': nick_name})
+    # return jsonify(api_format(status.HTTP_200_OK, "ok", {'uid': session['uid'], 'nick_name': nick_name}))
+
+
+
     if 'uid' not in session:
         session['uid'] = str(uuid.uuid4())
     nick_name = request.values['nick_name']
@@ -36,6 +51,7 @@ def create_name():
     return jsonify(api_format(status.HTTP_200_OK, "ok", {'uid': session['uid'], 'nick_name': nick_name}))
 
 
+
 @chat.route('/get-room-members', methods=['post'])
 def get_room_members():
     """Get user_id list of the pointed room
@@ -47,7 +63,8 @@ def get_room_members():
         room_id: the room that pointed
         user_list: the list of user_id
     """
-    room_id = request.values['room_id']
+    json_content = request.get_json()
+    room_id = json_content['room_id']
     uid_list = list(redis.smembers(room_id))
     user_list = []
     for uid in uid_list:
@@ -57,8 +74,9 @@ def get_room_members():
 
 @chat.route('/get-room-messages', methods=['post'])
 def get_room_messages():
-    room_id = request.values['room_id']
-    message_num = int(request.values['message_num'])
+    json_content = request.get_json()
+    room_id = json_content['room_id']
+    message_num = int(json_content['message_num'])
     result_list = Message.query.filter_by(room_id=room_id).order_by(Message.message_time).limit(message_num).all()
     message_list = []
     for message in result_list:

@@ -43,7 +43,7 @@ def leave(message):
 @socketio.on('user message', namespace='/chat')
 def user_message(message):
     room_id = message['room_id']
-    message_time = datetime.fromtimestamp(float(message['message_time'])/1000.0)
+    message_time = datetime.fromtimestamp(float(message['message_time']))
     content = message['content']
     nick_name = session[room_id]
     message = {

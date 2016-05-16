@@ -40,7 +40,7 @@
           // 发送新消息
           $('#send').click(function(event) {
               var current_time = new Date().getTime();
-              socket.emit('user message', {room_id: "{{ room_id}}", content: $('#message').val(), message_time: current_time});
+              socket.emit('user message', {room_id: "{{ room_id}}", content: $('#message').val(), message_time: current_time/1000});
           })
       });
       window.onbeforeunload = function() {
