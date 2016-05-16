@@ -23,25 +23,11 @@ def create_name():
         uid: the user_id to identify the user
         nick_name: the user's nick_name
     """
-    # json_content = request.get_json()
-    # if 'uid' not in session:
-    #     session['uid'] = str(uuid.uuid4())
-    # nick_name = json_content['nick_name']
-    # room_id = json_content['room_id']
-    # room = Room.query.get(room_id)
-    # if room is None:
-    #     session.pop(room_id, None)
-    #     return jsonify(api_format(status.HTTP_404_NOT_FOUND, "no such room"))
-    # session[room_id] = nick_name
-    # redis.hmset(room_id + ':' + session['uid'], {'uid': session['uid'], 'nick_name': nick_name})
-    # return jsonify(api_format(status.HTTP_200_OK, "ok", {'uid': session['uid'], 'nick_name': nick_name}))
-
-
-
+    json_content = request.get_json()
     if 'uid' not in session:
         session['uid'] = str(uuid.uuid4())
-    nick_name = request.values['nick_name']
-    room_id = request.values['room_id']
+    nick_name = json_content['nick_name']
+    room_id = json_content['room_id']
     room = Room.query.get(room_id)
     if room is None:
         session.pop(room_id, None)
@@ -50,6 +36,20 @@ def create_name():
     redis.hmset(room_id + ':' + session['uid'], {'uid': session['uid'], 'nick_name': nick_name})
     return jsonify(api_format(status.HTTP_200_OK, "ok", {'uid': session['uid'], 'nick_name': nick_name}))
 
+
+
+    # if 'uid' not in session:
+    #     session['uid'] = str(uuid.uuid4())
+    # nick_name = request.values['nick_name']
+    # room_id = request.values['room_id']
+    # room = Room.query.get(room_id)
+    # if room is None:
+    #     session.pop(room_id, None)
+    #     return jsonify(api_format(status.HTTP_404_NOT_FOUND, "no such room"))
+    # session[room_id] = nick_name
+    # redis.hmset(room_id + ':' + session['uid'], {'uid': session['uid'], 'nick_name': nick_name})
+    # return jsonify(api_format(status.HTTP_200_OK, "ok", {'uid': session['uid'], 'nick_name': nick_name}))
+    #
 
 
 @chat.route('/get-room-members', methods=['post'])

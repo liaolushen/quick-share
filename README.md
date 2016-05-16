@@ -172,7 +172,7 @@
 }
 ```
 
-## SOCKET接收接口
+## SOCKET发送接口
 
 ### 连接服务器
 
@@ -240,8 +240,46 @@
 
 + 返回消息：发送`user message`
 
-## SOCKET发送接口
+## SOCKET接收接口
 
-### 系统消息
-### 用户消息
-### 用户更新
+### 接收系统消息
+
++ NAMESPACE：`/chat`
++ MESSAGE：`system message`
++ 返回示例
+
+```
+{
+  'content': '成功连接'
+}
+```
+
+### 接收用户消息
+
++ NAMESPACE：`/chat`
++ MESSAGE：`user message`
++ 返回示例
+
+```
+{
+  'uid': "0a44fbb8-7be5-4402-8528-1ee1c0badd7d",
+  'nick_name': '御坂美琴',
+  'message_time': 1463367898,
+  'content': '大家好'
+}
+```
+
+### 接收用户更新
+
++ NAMESPACE：`/chat`
++ MESSAGE：`user update`
++ 返回示例
+
+```
+{
+  'flag': 'leave',
+  'uid': '0a44fbb8-7be5-4402-8528-1ee1c0badd7d',
+  'nick_name': '御坂美琴'
+}
+`flag`有`leave`和`join`两个值，分别表示离开房间和加入房间
+```
