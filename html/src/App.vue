@@ -22,6 +22,7 @@ body {
 }
 
 </style>
+
 <template>
   <div>
     <router-view class="ui-view"></router-view>
