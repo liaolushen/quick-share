@@ -3,7 +3,7 @@ from flask import Blueprint, request, render_template, redirect,\
                     url_for, session, current_app, jsonify
 from flask.ext.api import status
 from datetime import datetime
-from app import app, db
+from app import app, db, redis
 from app.common import generate_random_num_str, api_format
 from app.models.chat_mod import Room
 from app.models.manage_mod import Manager
@@ -51,6 +51,7 @@ def create_room():
         )
     )
     db.session.commit()
+    redis.set(room_id + ':message_num', 0)
     return jsonify(api_format(
         status.HTTP_200_OK,
         "ok",

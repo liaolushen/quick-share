@@ -32,13 +32,15 @@ class Message(db.Model):
     __tablename__ = 'chat_message'
     id = db.Column(db.Integer, primary_key=True)
     message_time = db.Column(db.DateTime)
+    serial_number = db.Column(db.Integer)
     content = db.Column(db.TEXT)
     uid = db.Column(db.String(80))
     nick_name = db.Column(db.String(100))
     room_id = db.Column(db.String(10), db.ForeignKey('chat_room.id'))
 
-    def __init__(self, message_time, content, uid, nick_name, room_id):
+    def __init__(self, message_time, serial_number, content, uid, nick_name, room_id):
         self.message_time = message_time
+        self.serial_number = serial_number
         self.content = content
         self.uid = uid
         self.nick_name = nick_name

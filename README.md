@@ -64,7 +64,7 @@
 
 ### 用户创建昵称
 
-+ 接口：`/api/chat/create-room`
++ 接口：`/api/chat/create-name`
 + 调用要求：无
 + 方法：POST
 + 请求类型：`application/json`
@@ -91,19 +91,40 @@
 }
 ```
 
-### 获取房间成员
+### 用户获得昵称
 
-+ 接口：`/api/chat/get-room-members`
++ 接口：`/api/chat/get-name`
 + 调用要求：无
-+ 方法：POST
++ 方法：GET
 + 请求类型：`application/json`
 + 调用示例：
 
 ```bash
-{
-  "room_id": "123456"
-}
+0.0.0.0:8888/api/chat/get-name?room_id=123456
+```
++ 返回示例：
 
+```bash
+{
+  "data": {
+    "nick_name": "御坂美琴",
+    "uid": "9ce67822-5365-4137-abdf-0641abd39b0e"
+  },
+  "status_code": 200,
+  "status_info": "ok"
+}
+```
+
+### 获取房间成员
+
++ 接口：`/api/chat/get-room-members`
++ 调用要求：无
++ 方法：GET
++ 请求类型：`application/json`
++ 调用示例：
+
+```bash
+0.0.0.0:8888/api/chat/get-room-members?room_id=123456
 ```
 + 返回示例：
 
@@ -135,16 +156,12 @@
 
 + 接口：`/api/chat/get-room-messages`
 + 调用要求：无
-+ 方法：POST
++ 方法：GET
 + 请求类型：`application/json`
 + 调用示例：
 
 ```bash
-{
-  "room_id": "123456",
-  "message_num": 10
-}
-
+0.0.0.0:8888/api/chat/get-room-messages?room_id=123456&&message_num=10
 ```
 + 返回示例：
 
@@ -153,16 +170,25 @@
   "data": {
     "message_list": [
       {
-        "content": "大家好",
-        "message_time": 1463372316,
-        "nick_name": "神",
-        "uid": "0a44fbb8-7be5-4402-8528-1ee1c0badd7d"
+        "content": "你好",
+        "message_time": 1463422367,
+        "nick_name": "御坂美琴",
+        "serial_number": 1,
+        "uid": "49c463e1-c987-434e-8dc6-e00f09ccbade"
       },
       {
-        "content": "私は许さん",
-        "message_time": 1463372343,
-        "nick_name": "神",
-        "uid": "0a44fbb8-7be5-4402-8528-1ee1c0badd7d"
+        "content": "我好",
+        "message_time": 1463422372,
+        "nick_name": "御坂美琴",
+        "serial_number": 2,
+        "uid": "49c463e1-c987-434e-8dc6-e00f09ccbade"
+      },
+      {
+        "content": "大家好",
+        "message_time": 1463422379,
+        "nick_name": "御坂美琴",
+        "serial_number": 3,
+        "uid": "49c463e1-c987-434e-8dc6-e00f09ccbade"
       }
     ],
     "room_id": "123456"
@@ -250,7 +276,7 @@
 
 ```
 {
-  'content': '成功连接'
+  content: '成功连接'
 }
 ```
 
@@ -262,10 +288,11 @@
 
 ```
 {
-  'uid': "0a44fbb8-7be5-4402-8528-1ee1c0badd7d",
-  'nick_name': '御坂美琴',
-  'message_time': 1463367898,
-  'content': '大家好'
+  uid: "0a44fbb8-7be5-4402-8528-1ee1c0badd7d",
+  nick_name: '御坂美琴',
+  message_time: 1463367898,
+  serial_number: 9,
+  content: '大家好'
 }
 ```
 
@@ -281,5 +308,5 @@
   'uid': '0a44fbb8-7be5-4402-8528-1ee1c0badd7d',
   'nick_name': '御坂美琴'
 }
-`flag`有`leave`和`join`两个值，分别表示离开房间和加入房间
 ```
+`flag`有`leave`和`join`两个值，分别表示离开房间和加入房间

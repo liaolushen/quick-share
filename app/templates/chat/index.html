@@ -22,18 +22,24 @@
 
           // 处理系统消息
           socket.on('system message', function(message) {
+            console.log('system message');
+            console.log(message);
               $('#log').append('<br>' + $('<div/>').text(message.content).html());
           })
 
 
           // 处理用户数目变化
           socket.on('user update', function(message) {
+              console.log('user update');
+              console.log(message);
               $('#user-num').html(message.nick_name);
               $('#log').append('<br>' + $('<div/>').text(message.uid).html());
           })
 
           // 处理新消息
           socket.on('user message', function(message) {
+            console.log('user message');
+            console.log(message);
               $('#log').append('<br>' + $('<div/>').text(message.nick_name + ':' + message.content + '(' + message.message_time * 1000 + ')').html());
           });
 

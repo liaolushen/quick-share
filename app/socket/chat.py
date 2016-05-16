@@ -46,15 +46,18 @@ def user_message(message):
     message_time = datetime.fromtimestamp(float(message['message_time']))
     content = message['content']
     nick_name = session[room_id]
+    serial_number = redis.incr(room_id + ':message_num')
     message = {
         'uid': session['uid'],
         'nick_name': nick_name,
         'message_time': time.mktime(message_time.timetuple()),
+        'serial_number': serial_number,
         'content': content
     }
     db.session.add(
         Message(
             message_time=message_time,
+            serial_number=serial_number,
             content=content,
             uid=session['uid'],
             nick_name=nick_name,
