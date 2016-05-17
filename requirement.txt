@@ -11,3 +11,4 @@ Werkzeug==0.10.4
 flask-sqlalchemy
 flask-api
 Flask-And-Redis
+redis
