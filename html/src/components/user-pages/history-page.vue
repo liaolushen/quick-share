@@ -15,7 +15,7 @@
 
 <script>
 import { Search,Group } from "vux";
-import MyCell from './MyCell';
+import MyCell from './../MyCell';
 
 export default {
   components: {

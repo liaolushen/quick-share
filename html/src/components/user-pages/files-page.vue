@@ -12,7 +12,7 @@
 
 <script>
 
-import MyCell from './MyCell'
+import MyCell from './../MyCell'
 import { Group } from 'vux'
 
 export default {

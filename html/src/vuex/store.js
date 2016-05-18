@@ -2,24 +2,18 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import createLogger from 'vuex/logger';
 import mutations from './mutations';
+import { messages, username, room, id, members } from './../data/mock'
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    test: 0,
-    messages: [
-      {role: 'self', name: '我自己', content: 'hello'},
-      {role: 'self', name: '我自己', content: 'hello'},
-      {role: 'other', name: '牠们', content: '就快乐撒价格快乐的是就快乐，进口关税了几个'},
-      {role: 'self', name: '我自己', content: 'hello'},
-      {role: 'other', name: '简单快乐', content: 'he就快乐就离开过设计健康管理撒llo'},
-      {role: 'self', name: '我自己', content: 'hello'},
-      {role: 'self', name: '我自己', content: 'hello'},
-      {role: 'other', name: '牠们', content: '就快乐撒价格快乐的是就快乐，进口关税了几个'},
-      {role: 'self', name: '我自己', content: 'hello'},
-      {role: 'other', name: '简单快乐', content: 'he就快乐就离开过设计健康管理撒llo'}
-    ]
+    name: username,
+    id: id,
+    rooms: [],
+    room: room, //current room
+    members: members, //members for the current room
+    messages: messages //messages for the current room    
   },
   mutations,
   middlewares: process.env.NODE_ENV !== 'production'

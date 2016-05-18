@@ -7,10 +7,6 @@
   color: #fff;
 }
 .bottom-area {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
   background-color: rgb(244,244,247);
 }
 

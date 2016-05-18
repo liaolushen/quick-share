@@ -17,8 +17,8 @@ body {
 }
 
 #app {
-  height: 100%;
   position: relative;
+  height: 100%;
 }
 
 </style>

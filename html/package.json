@@ -14,6 +14,7 @@
     "image2base64": "0.0.3",
     "lodash": "^4.12.0",
     "vue": "^1.0.18",
+    "vuex": "^0.6.3",    
     "vux": "0.0.116"
   },
   "devDependencies": {
