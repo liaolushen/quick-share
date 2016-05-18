@@ -1,28 +1,44 @@
 export function configRouter (router) {
   router.map({
     '/': {
-      component: require('./components/messages-page.vue'),
+      component: require('./components/user-pages/messages-page.vue'),
 
     },
     '/prop': {
       name: 'prop',
-      component: require('./components/property-page.vue'),
+      component: require('./components/user-pages/property-page.vue'),
     },
     '/qrcode': {
       name: 'qrcode',
-      component: require('./components/qrcode-page.vue'),
+      component: require('./components/user-pages/qrcode-page.vue'),
     },
     '/files': {
       name: 'files',
-      component: require('./components/files-page.vue'),
+      component: require('./components/user-pages/files-page.vue'),
     },
     '/history': {
       name: 'history',
-      component: require('./components/history-page.vue')
+      component: require('./components/user-pages/history-page.vue')
     },
     '/feedback': {
       name: 'feedback',
-      component: require('./components/feedback-page.vue')
-    }
+      component: require('./components/user-pages/feedback-page.vue')
+    },
+    '/chat-entrance': {
+      name: 'chat-entrance',
+      component: require('./components/user-pages/feedback-page.vue')
+    },
+    '/chat-entrance': {
+      name: 'chat-entrance',
+      component: require('./components/user-pages/chat-entrance-page.vue')
+    },
+    '/home': {
+      name: 'home',
+      component: require('./components/manager-pages/home-page.vue')
+    },
+    '/group-management': {
+      name: 'group-management',
+      component: require('./components/manager-pages/group-management-page.vue')
+    }    
   });
 }
