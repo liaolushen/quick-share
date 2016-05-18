@@ -40,6 +40,7 @@
 ```bash
 {
   "room_name": "御坂美琴の粉丝团",
+  "description": "I love misaka mikoto",
   "start_time": 1463367898,
   "end_time": 1463368898
 }
@@ -51,8 +52,9 @@
 # 调用成功
 {
   "data": {
+    "description": "I love misaka mikoto",
     "end_time": 1463368898,
-    "room_id": "248743",
+    "room_id": "961588",
     "room_name": "御坂美琴の粉丝团",
     "start_time": 1463367898
   },

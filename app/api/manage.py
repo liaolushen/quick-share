@@ -33,6 +33,7 @@ def create_room():
     if 'manager_id' not in session:
         return jsonify(api_format(status.HTTP_406_NOT_ACCEPTABLE, "you are not login"))
     room_name = json_content['room_name']
+    description = json_content['description']
     start_time = datetime.fromtimestamp(float(json_content['start_time']))
     end_time = datetime.fromtimestamp(float(json_content['end_time']))
     manager_id = session['manager_id']
@@ -47,11 +48,12 @@ def create_room():
             room_name=room_name,
             start_time=start_time,
             end_time=end_time,
+            description=description,
             manager_id=manager_id
         )
     )
     db.session.commit()
-    redis.set(room_id + ':message_num', 0)
+    redis.set(new_room_id + ':message_num', 0)
     return jsonify(api_format(
         status.HTTP_200_OK,
         "ok",
@@ -59,5 +61,6 @@ def create_room():
             'room_id': new_room_id,
             'room_name': room_name,
             'start_time': time.mktime(start_time.timetuple()),
-            'end_time': time.mktime(end_time.timetuple())
+            'end_time': time.mktime(end_time.timetuple()),
+            'description': description
         }))

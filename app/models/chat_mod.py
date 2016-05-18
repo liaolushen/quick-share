@@ -11,13 +11,15 @@ class Room(db.Model):
     name = db.Column(db.String(150), nullable=False)
     start_time = db.Column(db.DateTime)
     end_time = db.Column(db.DateTime)
+    description = db.Column(db.Text)
     manager_id = db.Column(db.Integer, db.ForeignKey('manager.id'))
 
-    def __init__(self, room_id, room_name, start_time, end_time, manager_id):
+    def __init__(self, room_id, room_name, start_time, end_time, description, manager_id):
         self.id = room_id
         self.name = room_name
         self.start_time = start_time
         self.end_time = end_time
+        self.description = description
         self.manager_id = manager_id
 
     def __repr__(self):
@@ -33,7 +35,7 @@ class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     message_time = db.Column(db.DateTime)
     serial_number = db.Column(db.Integer)
-    content = db.Column(db.TEXT)
+    content = db.Column(db.Text)
     uid = db.Column(db.String(80))
     nick_name = db.Column(db.String(100))
     room_id = db.Column(db.String(10), db.ForeignKey('chat_room.id'))

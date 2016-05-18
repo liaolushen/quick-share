@@ -36,6 +36,7 @@ db.session.add(
         room_name=u'御坂美琴',
         start_time=datetime.datetime(2015, 6, 12),
         end_time=datetime.datetime(2015, 7, 21),
+        description=u'御坂美琴',
         manager_id=1
     )
 )
@@ -46,6 +47,7 @@ db.session.add(
         room_name=u'御坂美琴',
         start_time=datetime.datetime(2015, 6, 12),
         end_time=datetime.datetime(2015, 7, 21),
+        description=u'御坂美琴',
         manager_id=1
     )
 )
