@@ -22,7 +22,8 @@
 ```bash
 {
   "data": {
-    "manager_id": 1
+    "manager_id": 1,
+    "manager_name": "御坂美琴"
   },
   "status_code": 200,
   "status_info": "ok"
@@ -57,6 +58,89 @@
     "room_id": "961588",
     "room_name": "御坂美琴の粉丝团",
     "start_time": 1463367898
+  },
+  "status_code": 200,
+  "status_info": "ok"
+}
+```
+
+### 管理员修改房间
+
++ 接口：`/api/manage/modify-room`
++ 调用要求：需登陆
++ 方法：POST
++ 请求类型：`application/json`
++ 调用示例：
+
+```bash
+# 可以修改room_name, start_time, end_time, description
+# 只需要在modified_item中添加需要修改的条目即可
+{
+  "room_id": "123456",
+  "modified_items": {
+    "description": "炮姐の粉丝团",
+    "start_time": 1463367798,
+    "end_time": 1463368998  
+  }
+}
+
+```
++ 返回示例：
+
+```bash
+# 调用成功
+{
+  "data": {
+    "description": "炮姐の粉丝团",
+    "end_time": 1463368998,
+    "room_id": "123456",
+    "room_name": "御坂美琴",
+    "start_time": 1463367798
+  },
+  "status_code": 200,
+  "status_info": "ok"
+}
+
+# 房间不存在
+{
+  "data": {},
+  "status_code": 404,
+  "status_info": "room is not existed"
+}
+```
+
+### 管理员获取房间列表
+
++ 接口：`/api/manage/get-room-list`
++ 调用要求：需登陆
++ 方法：GET
++ 调用示例：
+
+```bash
+0.0.0.0:8888/api/manage/get-room-list
+```
++ 返回示例：
+
+```bash
+# 调用成功
+{
+  "data": {
+    "room_list": [
+      {
+        "description": "御坂美琴",
+        "end_time": 1437408000,
+        "room_id": "123456",
+        "room_name": "御坂美琴",
+        "start_time": 1434038400
+      },
+      {
+        "description": "御坂美琴",
+        "end_time": 1437408000,
+        "room_id": "123457",
+        "room_name": "御坂美琴",
+        "start_time": 1434038400
+      }
+    ]
   },
   "status_code": 200,
   "status_info": "ok"
@@ -98,7 +182,6 @@
 + 接口：`/api/chat/get-name`
 + 调用要求：无
 + 方法：GET
-+ 请求类型：`application/json`
 + 调用示例：
 
 ```bash

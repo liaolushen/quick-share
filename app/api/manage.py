@@ -20,18 +20,24 @@ def login():
     manager_email = json_content['manager_email']
     manager_password = json_content['manager_password']
 
-    q_result = Manager.query.filter_by(email=manager_email, password=manager_password).first()
-    if q_result is None:
+    result_manager = Manager.query.filter_by(email=manager_email, password=manager_password).first()
+    if result_manager is None:
         return jsonify(api_format(status.HTTP_406_NOT_ACCEPTABLE, "email or password wrong"))
-    session['manager_id'] = q_result.id
-    return jsonify(api_format(status.HTTP_200_OK, "ok", {'manager_id': q_result.id}))
+    session['manager_id'] = result_manager.id
+    return jsonify(api_format(
+        status.HTTP_200_OK,
+        "ok",
+        {
+            'manager_id': result_manager.id,
+            'manager_name': result_manager.name
+        }))
 
 
 @manage.route('/create-room', methods=['POST'])
 def create_room():
-    json_content = request.get_json()
     if 'manager_id' not in session:
         return jsonify(api_format(status.HTTP_406_NOT_ACCEPTABLE, "you are not login"))
+    json_content = request.get_json()
     room_name = json_content['room_name']
     description = json_content['description']
     start_time = datetime.fromtimestamp(float(json_content['start_time']))
@@ -64,3 +70,54 @@ def create_room():
             'end_time': time.mktime(end_time.timetuple()),
             'description': description
         }))
+
+
+@manage.route('/modify-room', methods=['POST'])
+def modify_room():
+    if 'manager_id' not in session:
+        return jsonify(api_format(status.HTTP_406_NOT_ACCEPTABLE, "you are not login"))
+    manager_id = session['manager_id']
+    json_content = request.get_json()
+    room_id = json_content['room_id']
+    modified_items = json_content['modified_items']
+    result_room = Room.query.filter_by(id=room_id, manager_id=manager_id).first()
+    if result_room is None:
+        return jsonify(api_format(status.HTTP_404_NOT_FOUND, "room is not existed"))
+    print modified_items
+
+    for item_name in modified_items:
+        if item_name == "start_time" or item_name == "end_time":
+            time_item = datetime.fromtimestamp(float(modified_items[item_name]))
+            setattr(result_room, item_name, time_item)
+        else:
+            setattr(result_room, item_name, modified_items[item_name])
+    db.session.commit()
+    return jsonify(api_format(
+        status.HTTP_200_OK,
+        "ok",
+        {
+            'room_id': result_room.id,
+            'room_name': result_room.name,
+            'start_time': time.mktime(result_room.start_time.timetuple()),
+            'end_time': time.mktime(result_room.end_time.timetuple()),
+            'description': result_room.description
+        }))
+
+
+
+@manage.route('/get-room-list', methods=['GET'])
+def get_room_list():
+    if 'manager_id' not in session:
+        return jsonify(api_format(status.HTTP_406_NOT_ACCEPTABLE, "you are not login"))
+    manager_id = session['manager_id']
+    result_list = Room.query.filter_by(manager_id=manager_id).all()
+    room_list = []
+    for room in result_list:
+        room_list.append({
+            'room_id': room.id,
+            'room_name': room.name,
+            'start_time': time.mktime(room.start_time.timetuple()),
+            'end_time': time.mktime(room.end_time.timetuple()),
+            'description': room.description
+        })
+    return jsonify(api_format(status.HTTP_200_OK, "ok", {'room_list': room_list}))
