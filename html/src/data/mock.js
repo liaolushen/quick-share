@@ -12,8 +12,8 @@ var messages = [
   { role: 'other', name: '简单快乐', content: 'he就快乐就离开过设计健康管理撒llo' }
 ];
 
-var username = 'lushi'
-var room = '1'
-var id = '1'
-var members = ''
-export { messages, username, room, id, members }
+var name = 'lushi'
+var room = null
+var id = null
+var members = null
+export { messages, name, room, id, members }

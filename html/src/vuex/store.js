@@ -2,16 +2,16 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import createLogger from 'vuex/logger';
 import mutations from './mutations';
-import { messages, username, room, id, members } from './../data/mock'
+import { messages, name, room, id, members} from './../data/mock'
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    name: username,
+    name: name,
     id: id,
     rooms: [],
-    room: room, //current room
+    room: null, //current room
     members: members, //members for the current room
     messages: messages //messages for the current room    
   },

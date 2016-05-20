@@ -1,4 +1,4 @@
-import { set } from 'vue';
+import { set } from 'vue'
 import * as types from './mutation-types'
 
 export default {
@@ -20,6 +20,10 @@ export default {
 	// obj: room = {...}
 	[types.DEL_ROOM] (state, room) {
 		delRoom(state, room);
+	},
+
+	[types.LEAVE_ROOM] (state) {
+		leaveRoom(state);
 	},
 
 	// Array; rooms = [{}, {}] 
@@ -67,6 +71,12 @@ export default {
   [types.SEND_MESSAGE] (state, message) {
     state.messages.push(message);
   }
+}
+
+function leaveRoom(state) {
+	state.room = null;
+	state.messages = [];
+	state.members = [];
 }
 
 function addRoom(state, room) {

@@ -1,23 +1,32 @@
-export const id = state => {
+export const getId = state => {
 	return state.id;
 }
 
-export const name = state => {
+export const getName = state => {
 	return state.name;
 }
 
-export const allRooms .= state => {
+export const getRooms = state => {
 	return state.rooms;
 }
 
-export const curRoom = state => {
-	return state.room;
+export const getCurRoom = state => {
+	if(!state.room) {
+		return {
+  		room_name: '',
+  		description: '',
+  		start_time: '选择时间',
+  		end_time: '选择时间'						
+		}
+	} else {
+		return state.room; 
+	}
 }
 
-export const members = state => {
+export const getMembers = state => {
 	return state.members;
 }
 
-export const messages = state => {
+export const getMessages = state => {
 	return state.messages;
 }

@@ -30,14 +30,14 @@
 </style>
 
 <template>
-	<div class="ui_card">
-		<template v-if="title !== ''">
+	<div class="ui_card" @click="enterGroup">
+		<template v-if="room_name !== ''">
 			<div class="ui_card_hd">
-				<p>{{title}}</p>
+				<p>{{room_name}}</p>
 			</div>
 			<div class="ui_card_ft">
-				<p>{{date}}</p>
-				<p>{{during}}</p>
+				<p>{{start_time}}</p>
+				<p>{{end_time}}</p>
 			</div>
 		</template>
 		<template v-else>
@@ -49,19 +49,61 @@
 </template>
 
 <script>
+
+import {setCurRoom, receiveMembers, receiveMessages, leaveRoom } from "./../vuex/actions"
+import { getCurRoom } from "./../vuex/getters"
+import { networkApi } from "./../api/networkApi"
+
 export default {
 	props: {
-		title: {
+		room_name: {
 			type: String,
 			default: ''
 		},
-		date: {
+		start_time: {
 			type: String,
 			default: ''
 		},
-		during: {
+		end_time: {
 			type: String,
 			default: ''
+		},
+		room_id: {
+			type: Number,
+			default: ''
+		}
+	},
+	vuex: {
+		getters: {
+			room: getCurRoom
+		},
+		actions: {
+			setCurRoom,
+			receiveMembers,
+			receiveMessages,
+			leaveRoom
+		}
+	},
+	methods: {
+		enterGroup: function() {
+			if(this.room_id === room.room_id) {
+				router.go({name: 'group-management'});
+			} else {
+				this.leaveRoom();
+			}
+			if(this.room_id !== "") {
+				this.setCurRoom({
+					room_name: this.room_name,
+					room_id: this.room_id,
+					start_time: this.start_time,
+					end_time: this.end_time
+				});
+
+				//networkApi.getMembers(this, "GET", this.room_id).networkApi.getMessages(this, "GET", this.room_id, "10").then(() => {router.go({name: "group-management"})}).catch((err)=>{console.log(err)});
+				router.go({name: 'group-management'});
+			} else {
+				router.go({name: 'group-management'});
+			}
 		}
 	}
 }
