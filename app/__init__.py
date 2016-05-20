@@ -2,6 +2,7 @@
 # Import flask and template operators
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
+from flask.ext.cors import CORS
 from flask_socketio import SocketIO
 from flask_redis import Redis
 import datetime
@@ -13,6 +14,7 @@ app.config.from_object('config.DevelopmentConfig')
 socketio = SocketIO(app)
 db = SQLAlchemy(app)
 redis = Redis(app)
+cors = CORS(app, resources={r"*": {"origins": "*"}})
 
 
 import views, socket, api

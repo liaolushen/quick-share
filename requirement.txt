@@ -12,3 +12,4 @@ flask-sqlalchemy
 flask-api
 Flask-And-Redis
 redis
+flask-cors
