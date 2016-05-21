@@ -39,7 +39,7 @@
 <script>
 import Message from './Message'
 import MyInput from './Input'
-import { getMessages } from "./../vuex/getters"
+import { getMessages, getCurRoom } from "./../vuex/getters"
 
 
 export default {
@@ -58,7 +58,8 @@ export default {
   },
   vuex: {
     getters: {
-      messages: getMessages
+      messages: getMessages,
+      room: getCurRoom
     }
   },
   watch: {
@@ -73,10 +74,49 @@ export default {
     MyInput
   },
   ready() {
-    document.getElementById('input-area').style.width = this.width;
+    // for css
+    $("#input-area").css("width", this.width);
     if(this.role === "manager") {
-      document.getElementById('transparent-button').style.display = "none";
+      $("#transparent-button").css("display", "none");
     }
+    
+
+/*    if(this.room.room_id) { 
+      var socket = io.connect("http://45.32.41.145:8888/chat");
+      //监听
+      socket.on('connet',() => {
+        console.log('connet successful')
+        socket.emit('join room', {room_id: this.room.room_id});
+      });
+
+      socket.on('system message', (message) => {
+        console.log('system message');
+        console.log(message);
+      });
+
+      socket.on('user update', (message) => {
+        console.log('user update');
+        memberJoin({
+          uid: message.uid,
+          nick_name: message.nick_name
+        });
+      });
+
+      socket.on('user message' (message) => {
+        console.log("user message", message);
+        recieveMessage({
+          uid: message.uid,
+          nick_name: message.nick_name,
+          content: message.content,
+          message_time: message.message_time,
+          serial_number: message.serial_number
+        });
+        // add a content to the ui
+        
+      })
+    } else {
+      //
+    }*/
   }
 }
 </script>

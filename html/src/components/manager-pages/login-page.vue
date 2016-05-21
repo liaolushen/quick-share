@@ -68,7 +68,8 @@ export default {
 		},
 		actions: {
 			setName,
-			setId
+			setId,
+			setRooms
 		}
 	},
 	methods: {
@@ -77,10 +78,14 @@ export default {
 				manager_email: this.manager_email,
 				manager_password: this.manager_password
 			};
-			console.log(data);
 			var err = validator.login(data);
 			if (!err) {	
 				networkApi.login(this,"POST", data)
+					.then(() => {
+						networkApi.getRoomList(this, "GET").then(() => {
+							return Promise.resolve();
+						})
+					})
 					.then(() => {
 						router.go({name: 'home'});
 					})
