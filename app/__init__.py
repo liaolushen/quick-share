@@ -14,7 +14,7 @@ app.config.from_object('config.DevelopmentConfig')
 socketio = SocketIO(app)
 db = SQLAlchemy(app)
 redis = Redis(app)
-cors = CORS(app, resources={r"*": {"origins": "*"}})
+cors = CORS(app, resources={r"*": {"origins": "*"}}, supports_credentials=True)
 
 
 import views, socket, api
