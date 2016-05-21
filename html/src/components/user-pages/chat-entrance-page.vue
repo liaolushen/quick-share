@@ -11,7 +11,7 @@
 		</div>
 
 		<div class="enter-chat">
-			<button class="weui_btn" @click="setName">进入聊天</x-button>
+			<button class="weui_btn" @click="setName">进入聊天</button>
 		</div>
 	</div>
 </template>

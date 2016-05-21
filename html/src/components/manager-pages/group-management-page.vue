@@ -45,9 +45,10 @@
 
 import {Tab, TabItem, Group, Flexbox, FlexboxItem} from 'vux'
 import ChatBox from './../ChatBox'
-
 import MHeader from './partials/header-partial'
 import MGroup from './partials/group-management-partial'
+import {setCurRoom} from './../../vuex/actions'
+//import {get} from './../../vuex/getters'
 
 export default {
   data() {

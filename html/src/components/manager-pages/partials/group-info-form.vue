@@ -1,24 +1,24 @@
 <template>
 	<div class="groups">	
 		<group title="群名称">
-			<x-input title="" :value.sync='form.name'></x-input>
+			<x-input title="" :value.sync='form.room_name'></x-input>
 		</group>
 		<group title="群介绍">
-			<x-textarea :value.sync="form.introduction" :max="300" :show-counter="false"></x-textarea>
+			<x-textarea :value.sync="form.description" :max="300" :show-counter="false"></x-textarea>
 		</group>
 		<group title="开始时间">
       <cell title="" primary="content">
-        <calendar slot="value" :value.sync="form.startTime" hours disable-past></calendar>
+        <calendar slot="value" :value.sync="form.start_time" hours disable-past></calendar>
       </cell>
 		</group>
 		<group title="结束时间">
       <cell title="" primary="content">
-        <calendar slot="value" :value.sync="form.endTime" hours disable-past></calendar>
+        <calendar slot="value" :value.sync="form.end_time" hours disable-past></calendar>
       </cell>
 		</group>
 	</div>
 	<div class="btn-wrapper">
-		<x-button type="primary" @click="storeGroupInfo">保存</x-button>
+		<x-button type="primary" @click="createRoom">保存</x-button>
 	</div>
 </template>
 
@@ -50,37 +50,47 @@
 
 <script>
 import {Group, Cell, XInput, XTextarea, Datetime, XButton, Calendar} from 'vux'
+import { getCurRoom } from "./../../../vuex/getters"
+import { setCurRoom, setMessages, createRoom, leaveRoom } from "./../../../vuex/actions"
+import { validator } from "./../../../api/validator"
+import { networkApi } from "./../../../api/networkApi"
 
 export default {
 /*	props: {
 		groupid 
 	},*/
-	data() {
-		return {
-			form: {
-    		name: '',
-    		introduction: '',
-    		startTime: '选择时间',
-    		endTime: '选择时间'
-    	}
+	vuex: {
+		getters: {
+			form: getCurRoom
+		},
+		actions: {
+			setCurRoom,
+			createRoom
 		}
 	},
-
+	ready() {
+	},
+	data() {
+		return {
+		}
+	},
 	methods: {
-  	storeGroupInfo: function() {
-  		var formData = {
-  			name: this.form.name,
-  			introuduction: this.form.introduction,
-  			startTime: this.startTime,
-  			endTime: this.endTime,
+  	createRoom: function() {
+  		var room = {
+  			room_name: this.form.room_name,
+  			description: this.form.description,
+  			start_time: this.form.start_time,
+  			end_time: this.form.end_time
   			//groupId: this.groupId
   		};
-  		var result ;
-  		if(result = "格式正确") {
-  			alert('OK');
-  			//后台请求
+  		var err = validator.group_info(room);
+  		if(!err) {
+  			networkApi.createRoom(this, "POST", room)
+  				.catch((err) => {
+  					console.log(err);
+  				})
   		} else {
-  			alert(result);
+  			console.log(err)
   		}
   	}	
 	},

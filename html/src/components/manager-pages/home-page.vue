@@ -21,10 +21,9 @@
 		<m-header></m-header>
 		<div id="groups" class="clearfix">
 			<header>你所创建的群组</header>
-			<group-card v-for="group in groupList" :during="group.during" :title="group.title" :date="group.date"></group-card>
-			<group-card during="10:00-16:00" title="2016 国际体验设计大会" date="6月29日"></group-card>
+			<group-card v-for="group in groupList"  :room_name="group.room_name"  :start_time ="group.start_time" :date="group.end_time" :room_id="group.room_id"></group-card>
+			<group-card room_name="2016 国际体验设计大会" start_time ="6/9 10:00" end_time="6/9 14:00" :room_id="123123"></group-card>
 			<group-card></group-card>
-			<group-card during="10:00-16:00" title="2016 国际体验设计大会" date="6月29日"></group-card> 
 		</div>
 	</div>
 </template>
@@ -32,23 +31,28 @@
 <script>
 import MHeader from './partials/header-partial'
 import GroupCard from './../GroupCard'
+import { setCurRoom } from './../../vuex/actions'
+import { getRooms } from './../../vuex/getters'
 
 export default {
-  data() {
-    return {
-			groupList: [
-				{
-					title: '2016 国际体验设计大会',
-					date: '6月29日',
-					during: '10：00-16：00'
-				},
-				{
-					title: '2016 国际体验设计大会',
-					date: '6月29日',
-					during: '10：00-16：00'					
+	vuex: {
+		getters: {
+			groupList: (state) => {
+				if(getRooms(state).length === 0) {
+					return null;
+				} else {
+					return getRooms(state)
 				}
-			],			
-    }
+			}
+		},
+		actions: {
+			setCurRoom
+		}
+	},
+  data() {
+  	return {
+  		
+  	}
   },
   components: {
 		MHeader,

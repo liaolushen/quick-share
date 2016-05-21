@@ -39,6 +39,9 @@
 <script>
 import Message from './Message'
 import MyInput from './Input'
+import { getMessages } from "./../vuex/getters"
+
+
 export default {
   props: {
     width: {
@@ -55,7 +58,7 @@ export default {
   },
   vuex: {
     getters: {
-      messages: state => state.messages
+      messages: getMessages
     }
   },
   watch: {
@@ -70,7 +73,6 @@ export default {
     MyInput
   },
   ready() {
-    console.log('ready');
     document.getElementById('input-area').style.width = this.width;
     if(this.role === "manager") {
       document.getElementById('transparent-button').style.display = "none";

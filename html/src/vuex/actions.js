@@ -1,9 +1,10 @@
-export const setID = ({ dispatch }, id) => {
+
+export const setId = ({ dispatch }, id) => {
 	dispatch('SET_ID', id);
 }
 
-export const setUsername = ({ dispatch}, username) => {
-	dispatch('SET_USENAME', username);
+export const setName = ({ dispatch }, name) => {
+	dispatch('SET_NAME', name);
 }
 
 export const createRoom = ({ dispatch }, room) => {
@@ -14,12 +15,16 @@ export const delRoom = ({ dispatch }, room) => {
 	dispatch('DEL_ROOM', room);
 }
 
+export const leaveRoom = ({ dispatch }, room) => {
+	dispatch("LEAVE_ROOM");
+}
+
 //for manager
-export const chooseRoom = ({ dispatch }, room) => {
+export const setCurRoom = ({ dispatch }, room) => {
 	dispatch('SET_CUR_ROOM', room)
 } 
 
-export const getRooms = ({ dispath }, rooms) => {
+export const setRooms = ({ dispatch }, rooms) => {
 	dispatch("RECEIVE_ROOMS", rooms)
 }
 
@@ -36,7 +41,7 @@ export const memberLeave = ({ dispatch }, member) => {
 	dispatch('DEL_MEMBER', member);
 }
 
-export const getMembers = ({ dispatch }, members) => {
+export const receiveMembers = ({ dispatch }, members) => {
 	dispatch('RECEIVE_MEMBERS', members);
 }
 
@@ -44,7 +49,7 @@ export const recieveMessage = ({ dispatch }, message) => {
 	dispatch("RECEIVE_MESSAGE", message)
 }
 
-export const getMessages = ({ dispatch }, messages) => {
+export const receiveMessages = ({ dispatch }, messages) => {
 	dispatch("RECEIVE_MESSAGES", messages)
 }
 

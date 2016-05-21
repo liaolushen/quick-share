@@ -1,8 +1,11 @@
 export function configRouter (router) {
   router.map({
     '/': {
+      name: 'login',
+      component: require('./components/manager-pages/login-page.vue')
+    },
+    '/chat-box': {
       component: require('./components/user-pages/messages-page.vue'),
-
     },
     '/prop': {
       name: 'prop',
