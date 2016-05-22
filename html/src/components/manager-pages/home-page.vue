@@ -18,45 +18,44 @@
 
 <template>
 	<div class="view-page" id="home-page">
-		<m-header></m-header>
+		<m-header>
+			<span slot="left">SHARE</span>
+			<span slot="right">{{name}}</span>
+		</m-header>
 		<div id="groups" class="clearfix">
 			<header>你所创建的群组</header>
-			<group-card v-for="group in groupList"  :room_name="group.room_name"  :start_time ="group.start_time" :date="group.end_time" :room_id="group.room_id"></group-card>
-			<group-card room_name="2016 国际体验设计大会" start_time ="6/9 10:00" end_time="6/9 14:00" :room_id="123123"></group-card>
-			<group-card></group-card>
+			<room-card v-for="room in roomList"  :room_name="room.room_name"  :start_time ="room.start_time" :end_time="room.end_time" :room_id="room.room_id" :description="room.description"></room-card>
+			<room-card></room-card>
 		</div>
 	</div>
 </template>
 
 <script>
-import MHeader from './partials/header-partial'
-import GroupCard from './../GroupCard'
+import MHeader from './../MyHeader'
+import RoomCard from './../RoomCard'
 import { setCurRoom } from './../../vuex/actions'
-import { getRooms } from './../../vuex/getters'
+import { getRooms, getId, getName } from './../../vuex/getters'
 
 export default {
 	vuex: {
 		getters: {
-			groupList: (state) => {
-				if(getRooms(state).length === 0) {
-					return null;
-				} else {
-					return getRooms(state)
-				}
-			}
+			roomList: getRooms,
+			auth: getId,
+			name: getName
 		},
 		actions: {
 			setCurRoom
 		}
 	},
-  data() {
-  	return {
-  		
-  	}
-  },
+	route: {
+		activate (transition) {
+			console.log("adfa", this.auth);
+			!this.auth ? transition.redirect('/'):transition.next();
+		}
+	},
   components: {
 		MHeader,
-		GroupCard, 
+		RoomCard, 
   }
 }
 </script>

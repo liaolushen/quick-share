@@ -15,7 +15,10 @@
 
 <template>
   <div class="view-page manage-page">
-    <m-header></m-header>
+    <m-header>
+      <span slot="left">SHARE</span>
+      <span slot="right">{{name}}</span>
+    </m-header>
     <div id="group-manage-body">
       <div id="chatbox-part">
         <chat-box width="33%" role="manager"></chat-box>
@@ -45,10 +48,10 @@
 
 import {Tab, TabItem, Group, Flexbox, FlexboxItem} from 'vux'
 import ChatBox from './../ChatBox'
-import MHeader from './partials/header-partial'
+import MHeader from './../MyHeader'
 import MGroup from './partials/group-management-partial'
 import {setCurRoom} from './../../vuex/actions'
-//import {get} from './../../vuex/getters'
+import { getId, getName, getMessages } from './../../vuex/getters'
 
 export default {
   data() {
@@ -58,16 +61,19 @@ export default {
       res: [{title: 'kdlsag'}]
     }
   },
+  route: {
+    activate (transition) {
+      console.log("adfa", this.auth);
+      !this.auth ? transition.redirect('/'):transition.next();
+    }
+  }, 
   methods: {
-    storeGroupInfo: function() {
-      console.log(this.form.startTime);
-      console.log(this.form.name);
-    } 
   },
   vuex: {
     getters: {
-      messages: state => state.messages,
-      username: state => state.username
+      messages: getMessages,
+      auth: getId,
+      name: getName
     }
   },
   components: {

@@ -32,6 +32,8 @@ body {
 
 <script>
 import store from "./vuex/store";
+import { getId } from './vuex/getters'
+
 
 module.exports = {
   data() {return {}},

@@ -147,7 +147,7 @@
         <button class="ui-emotion" @click="triggleEmotion"></button>
       </div>
       <div class="right">
-        <x-button text="发送" type="primary" @click="send"></x-button>
+        <x-button id="send" text="发送" type="primary" @click="send"></x-button>
       </div>
       <div class="main">
         <div class="textarea-wrapper">
@@ -164,13 +164,16 @@ import { XButton } from 'vux';
 
 import { sendMessage } from '../vuex/actions';
 import EmotionPicker from './EmotionPicker';
-
+import { getCurRoom } from './../vuex/getters'
 export default {
   components: {
     XButton,
     EmotionPicker
   },
   vuex: {
+    getters: {
+      room: getCurRoom
+    },
     actions: {
       sendMessage
     }
@@ -183,6 +186,22 @@ export default {
       isEmotionShow: false
     }
   },
+/*  ready() {
+    $('#send').on('click', (event) => {
+      if (this.content.length <= 0) return;
+        this.isEmotionShow = false;
+        //this.sendMessage({'content': this.content, 'name': 'wo', 'role': 'self'});
+        this.content = '';      
+        var current_time = new Date().getTime()/1000;
+        var message = {
+          room_id: this.room.room_id,
+          content: this.content,
+          message: current_time
+        }
+        socket.emit('user message', message)
+      }
+    })
+  },*/
   watch: {
     'content': function(val, oldVal) {
       const flexOne = this.$els.realinput;

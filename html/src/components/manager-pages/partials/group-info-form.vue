@@ -8,17 +8,17 @@
 		</group>
 		<group title="开始时间">
       <cell title="" primary="content">
-        <calendar slot="value" :value.sync="form.start_time" hours disable-past></calendar>
+        <calendar slot="value" :value.sync="form.start_time | date" hours disable-past></calendar>
       </cell>
 		</group>
 		<group title="结束时间">
       <cell title="" primary="content">
-        <calendar slot="value" :value.sync="form.end_time" hours disable-past></calendar>
+        <calendar slot="value" :value.sync="form.end_time | date" hours disable-past></calendar>
       </cell>
 		</group>
 	</div>
 	<div class="btn-wrapper">
-		<x-button type="primary" @click="createRoom">保存</x-button>
+		<x-button type="primary" @click="editRoom">保存</x-button>
 	</div>
 </template>
 
@@ -50,7 +50,7 @@
 
 <script>
 import {Group, Cell, XInput, XTextarea, Datetime, XButton, Calendar} from 'vux'
-import { getCurRoom } from "./../../../vuex/getters"
+import { getCurRoom, getForm } from "./../../../vuex/getters"
 import { setCurRoom, setMessages, createRoom, leaveRoom } from "./../../../vuex/actions"
 import { validator } from "./../../../api/validator"
 import { networkApi } from "./../../../api/networkApi"
@@ -59,38 +59,58 @@ export default {
 /*	props: {
 		groupid 
 	},*/
+	data() {
+		return {
+
+		}
+	},
 	vuex: {
 		getters: {
-			form: getCurRoom
+			form: getForm 
 		},
 		actions: {
 			setCurRoom,
 			createRoom
 		}
 	},
-	ready() {
-	},
-	data() {
-		return {
+	filters: {
+		date: (value) => {
+			return value === "选择时间" ? value : new Date(value).toLocaleString();
 		}
 	},
+	ready() {
+	},
 	methods: {
-  	createRoom: function() {
-  		var room = {
-  			room_name: this.form.room_name,
-  			description: this.form.description,
-  			start_time: this.form.start_time,
-  			end_time: this.form.end_time
-  			//groupId: this.groupId
-  		};
-  		var err = validator.group_info(room);
-  		if(!err) {
-  			networkApi.createRoom(this, "POST", room)
-  				.catch((err) => {
-  					console.log(err);
+  	editRoom: function() {
+			if(!form.room_id) {
+	  		var room = {
+	  			room_name: this.form.room_name,
+	  			description: this.form.description,
+	  			start_time: this.form.start_time,
+	  			end_time: this.form.end_time
+	  		};
+	  		var err = validator.group_info(room);
+	  		if(!err) {	
+	  			networkApi.createRoom(this, "POST", room)
+	  				.catch((err) => {
+	  					console.log(err);
   				})
+	  		} else {
+	  			alert(err);
+	  		}
   		} else {
-  			console.log(err)
+  			var room = {
+  				room_id: form.room_id,
+  				modified_items: {
+  					description: form.description,
+  					start_time: form.start_time,
+  					end_time: form_end_time
+  				}
+  			}
+  			networkApi.modifyRoom(this, "POST", room)
+					.catch((err) => {
+						console.log(err);
+					})
   		}
   	}	
 	},
