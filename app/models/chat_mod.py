@@ -9,8 +9,8 @@ class Room(db.Model):
     __tablename__ = 'chat_room'
     id = db.Column(db.String(10), primary_key=True)
     name = db.Column(db.String(150), nullable=False)
-    start_time = db.Column(db.DateTime)
-    end_time = db.Column(db.DateTime)
+    start_time = db.Column(db.Integer)
+    end_time = db.Column(db.Integer)
     description = db.Column(db.Text)
     manager_id = db.Column(db.Integer, db.ForeignKey('manager.id'))
 

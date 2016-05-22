@@ -40,17 +40,17 @@ def create_room():
     json_content = request.get_json()
     room_name = json_content['room_name']
     description = json_content['description']
-    start_time = datetime.fromtimestamp(float(json_content['start_time']))
-    end_time = datetime.fromtimestamp(float(json_content['end_time']))
+    start_time = int(json_content['start_time'])
+    end_time = int(json_content['end_time'])
     manager_id = session['manager_id']
 
     while True:
-        new_room_id = generate_random_num_str(6)
-        if Room.query.get(new_room_id) is None:
+        room_id = generate_random_num_str(6)
+        if Room.query.get(room_id) is None:
             break
     db.session.add(
         Room(
-            room_id=new_room_id,
+            room_id=room_id,
             room_name=room_name,
             start_time=start_time,
             end_time=end_time,
@@ -59,15 +59,15 @@ def create_room():
         )
     )
     db.session.commit()
-    redis.set(new_room_id + ':message_num', 0)
+    redis.set(room_id + ':message_num', 0)
     return jsonify(api_format(
         status.HTTP_200_OK,
         "ok",
         {
-            'room_id': new_room_id,
+            'room_id': room_id,
             'room_name': room_name,
-            'start_time': time.mktime(start_time.timetuple()),
-            'end_time': time.mktime(end_time.timetuple()),
+            'start_time': start_time,
+            'end_time': end_time,
             'description': description
         }))
 
@@ -83,11 +83,10 @@ def modify_room():
     result_room = Room.query.filter_by(id=room_id, manager_id=manager_id).first()
     if result_room is None:
         return jsonify(api_format(status.HTTP_404_NOT_FOUND, "room is not existed"))
-    print modified_items
 
     for item_name in modified_items:
         if item_name == "start_time" or item_name == "end_time":
-            time_item = datetime.fromtimestamp(float(modified_items[item_name]))
+            time_item = int(modified_items[item_name])
             setattr(result_room, item_name, time_item)
         else:
             setattr(result_room, item_name, modified_items[item_name])
@@ -98,8 +97,8 @@ def modify_room():
         {
             'room_id': result_room.id,
             'room_name': result_room.name,
-            'start_time': time.mktime(result_room.start_time.timetuple()),
-            'end_time': time.mktime(result_room.end_time.timetuple()),
+            'start_time': result_room.start_time,
+            'end_time': result_room.end_time,
             'description': result_room.description
         }))
 
@@ -116,8 +115,8 @@ def get_room_list():
         room_list.append({
             'room_id': room.id,
             'room_name': room.name,
-            'start_time': time.mktime(room.start_time.timetuple()),
-            'end_time': time.mktime(room.end_time.timetuple()),
+            'start_time': room.start_time,
+            'end_time': room.end_time,
             'description': room.description
         })
     return jsonify(api_format(status.HTTP_200_OK, "ok", {'room_list': room_list}))
