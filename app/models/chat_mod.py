@@ -33,7 +33,7 @@ class Message(db.Model):
     """
     __tablename__ = 'chat_message'
     id = db.Column(db.Integer, primary_key=True)
-    message_time = db.Column(db.DateTime)
+    message_time = db.Column(db.Integer)
     serial_number = db.Column(db.Integer)
     content = db.Column(db.Text)
     uid = db.Column(db.String(80))

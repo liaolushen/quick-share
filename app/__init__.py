@@ -21,5 +21,5 @@ import views, socket, api
 db.create_all()
 db.session.commit()
 
-# add default manager for test
-import default_data
+# 添加测试数据
+import test_data

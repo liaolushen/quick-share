@@ -75,7 +75,7 @@ def get_room_messages():
             'serial_number': message.serial_number,
             'uid': message.uid,
             'nick_name': message.nick_name,
-            'message_time': time.mktime(message.message_time.timetuple()),
+            'message_time': message.message_time,
             'content': message.content
         })
     return jsonify(api_format(status.HTTP_200_OK, "ok", {'room_id': room_id, 'message_list': message_list}))

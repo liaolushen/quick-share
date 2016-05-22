@@ -219,16 +219,12 @@
     "room_id": "123456",
     "user_list": [
       {
-        "nick_name": "神",
-        "uid": "2a5f8e4a-8283-4646-8f12-de5124b73e1b"
+        "nick_name": "御姐",
+        "uid": "6348486f-79e3-44ec-be9c-a2387099c6a9"
       },
       {
-        "nick_name": "御坂美琴",
-        "uid": "cf3d88ad-afe0-4ae6-97d8-c4440c91d417"
-      },
-      {
-        "nick_name": "神",
-        "uid": "0a44fbb8-7be5-4402-8528-1ee1c0badd7d"
+        "nick_name": "开哥",
+        "uid": "e8bae13f-6f09-4896-a2cf-098ae7002d7c"
       }
     ]
   },
@@ -255,25 +251,18 @@
   "data": {
     "message_list": [
       {
-        "content": "你好",
-        "message_time": 1463422367,
-        "nick_name": "御坂美琴",
+        "content": "大家好，我是开哥",
+        "message_time": 1463939795782,
+        "nick_name": "开哥",
         "serial_number": 1,
-        "uid": "49c463e1-c987-434e-8dc6-e00f09ccbade"
+        "uid": "e8bae13f-6f09-4896-a2cf-098ae7002d7c"
       },
       {
-        "content": "我好",
-        "message_time": 1463422372,
-        "nick_name": "御坂美琴",
+        "content": "欢迎大家找我啪啪啪",
+        "message_time": 1463939796782,
+        "nick_name": "开哥",
         "serial_number": 2,
-        "uid": "49c463e1-c987-434e-8dc6-e00f09ccbade"
-      },
-      {
-        "content": "大家好",
-        "message_time": 1463422379,
-        "nick_name": "御坂美琴",
-        "serial_number": 3,
-        "uid": "49c463e1-c987-434e-8dc6-e00f09ccbade"
+        "uid": "e8bae13f-6f09-4896-a2cf-098ae7002d7c"
       }
     ],
     "room_id": "123456"

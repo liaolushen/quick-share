@@ -43,14 +43,14 @@ def leave(message):
 @socketio.on('user message', namespace='/chat')
 def user_message(message):
     room_id = message['room_id']
-    message_time = datetime.fromtimestamp(float(message['message_time']))
+    message_time = int(message['message_time'])
     content = message['content']
     nick_name = session[room_id]
     serial_number = redis.incr(room_id + ':message_num')
     message = {
         'uid': session['uid'],
         'nick_name': nick_name,
-        'message_time': time.mktime(message_time.timetuple()),
+        'message_time': message_time,
         'serial_number': serial_number,
         'content': content
     }
