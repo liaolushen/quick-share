@@ -1,6 +1,6 @@
 <style scoped>
   .manage-page {
-    overflow: hidden
+    /* overflow: hidden; */
   }
   #chatbox-part {
     float: left;
@@ -62,10 +62,9 @@ export default {
     }
   },
   route: {
-    activate (transition) {
-      console.log("adfa", this.auth);
+/*    activate (transition) {
       !this.auth ? transition.redirect('/'):transition.next();
-    }
+    }*/
   }, 
   methods: {
   },

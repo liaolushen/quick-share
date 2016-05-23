@@ -29,7 +29,7 @@
   <a id="transparent-button" class="transparent-button" v-link="{path:'/prop'}">...</a>
   <div id="msg-list" class="msg-list" style="padding-bottom: 70px;" v-el:list>
 
-    <message v-for="message in messages" :role="message.role" :name="message.name" :content="message.content"></message>
+    <message v-for="message in messages" :role="message.role" :name="message.nick_name" :content="message.content"></message>
   </div>
   <div id="input-area">
     <my-input></my-input>
@@ -39,8 +39,8 @@
 <script>
 import Message from './Message'
 import MyInput from './Input'
-import { getMessages, getCurRoom } from "./../vuex/getters"
-
+import { getMessages, getCurRoom,getId } from "./../vuex/getters"
+import { addMember, delMember, recieveMessage } from './../vuex/actions'
 
 export default {
   props: {
@@ -56,10 +56,57 @@ export default {
   data() {
     return {}
   },
+  ready() {
+    console.log('who,hahahahaha');
+    console.log(this)
+    $("#input-area").css("width", this.width);
+    if(this.role === "manager") {
+      $("#transparent-button").css("display", "none");
+    }
+
+/*    if(socket === null && this.room) {
+      socket = io.connect("http://45.32.41.145.8888/chat");
+      socket.on('connect', () => {
+        socket.emit('join room', {room_id: room.room_id});
+      });
+    }
+    socket.on('system message', (message) => {
+      console.log('system message');
+      console.log(message);
+      message.role = "system";
+    });
+    socket.on('user update', (message) => {
+      console.log('user update');
+      console.log(message);
+      if(message.flag === 'leave') {
+        this.delMember({uid:message.uid, nick_name:message.nick_name})
+        alert(message.nick_name, "leave")
+      } else {
+        this.addMember({uid:message.uid, nick_name: message.nick_name});
+        alert(message.nick_name, "join");
+      }
+    });
+    socket.on('user message', (message) => {
+      console.log('user message');
+      console.log(message);
+      if(message.uid === this.id) {
+        message.role = "self";
+      } else {
+        message.role = "other";
+      }
+      this.recieveMessage(message);
+    });*/
+  }, 
   vuex: {
     getters: {
       messages: getMessages,
-      room: getCurRoom
+      room: getCurRoom,
+      id: getId
+    },
+    actions: {
+      delMember,
+      addMember,
+      recieveMessage
     }
   },
   watch: {
@@ -72,51 +119,6 @@ export default {
   components: {
     Message,
     MyInput
-  },
-  ready() {
-    // for css
-    $("#input-area").css("width", this.width);
-    if(this.role === "manager") {
-      $("#transparent-button").css("display", "none");
-    }
-    
-
-/*    if(this.room.room_id) { 
-      var socket = io.connect("http://45.32.41.145:8888/chat");
-      //监听
-      socket.on('connet',() => {
-        console.log('connet successful')
-        socket.emit('join room', {room_id: this.room.room_id});
-      });
-
-      socket.on('system message', (message) => {
-        console.log('system message');
-        console.log(message);
-      });
-
-      socket.on('user update', (message) => {
-        console.log('user update');
-        memberJoin({
-          uid: message.uid,
-          nick_name: message.nick_name
-        });
-      });
-
-      socket.on('user message' (message) => {
-        console.log("user message", message);
-        recieveMessage({
-          uid: message.uid,
-          nick_name: message.nick_name,
-          content: message.content,
-          message_time: message.message_time,
-          serial_number: message.serial_number
-        });
-        // add a content to the ui
-        
-      })
-    } else {
-      //
-    }*/
   }
 }
 </script>

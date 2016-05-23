@@ -2,9 +2,10 @@ export function configRouter (router) {
   router.map({
     '/': {
       name: 'login',
-      component: require('./components/manager-pages/login-page.vue')
+      component: require('./components/manager-pages/login-page.vue'),
+      auth: false
     },
-    '/chat-box': {
+    '/room/:room_id': {
       component: require('./components/user-pages/messages-page.vue'),
     },
     '/prop': {
@@ -37,11 +38,16 @@ export function configRouter (router) {
     },
     '/home': {
       name: 'home',
-      component: require('./components/manager-pages/home-page.vue')
+      component: require('./components/manager-pages/home-page.vue'),
+      auth: true
     },
-    '/group-management': {
+    '/group-management/:room_id': {
       name: 'group-management',
-      component: require('./components/manager-pages/group-management-page.vue')
-    }    
+      component: require('./components/manager-pages/group-management-page.vue'),
+      auth: true
+    },  
   });
+  router.redirect({
+    '*': '/'
+  })
 }

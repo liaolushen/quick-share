@@ -1,5 +1,6 @@
 export const getId = state => {
-	return state.id;
+	return state.id ? state.id : -1;
+	//return 1
 }
 
 export const getName = state => {

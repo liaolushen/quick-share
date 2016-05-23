@@ -31,7 +31,7 @@
 
 .breakline {
   display: inline-block;
-  height: 1000px;
+  height: 600px;
   border-right: 1px solid #ccc;
 }
 

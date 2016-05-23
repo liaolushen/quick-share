@@ -18,7 +18,7 @@
 		</group>
 	</div>
 	<div class="btn-wrapper">
-		<x-button type="primary" @click="editRoom">保存</x-button>
+		<button id="infoFromBtn" class="btn btn-primary" @click="editRoom">保存</button>
 	</div>
 </template>
 
@@ -45,6 +45,21 @@
 .right-part {
 	width: 45%;
 	float: right;
+}
+
+.btn {
+	width: 100%;
+	line-height: 3;
+	color: white;
+	border-radius: 6px;
+	font-size: 18px;
+	border: none;
+}
+.btn-primary {
+	background-color: #04BE02;
+}
+.btn-disable {
+	background-color: #ccc;
 }
 </style>
 
@@ -82,16 +97,20 @@ export default {
 	},
 	methods: {
   	editRoom: function() {
-			if(!form.room_id) {
+			if(!this.form.room_id) {
 	  		var room = {
 	  			room_name: this.form.room_name,
 	  			description: this.form.description,
-	  			start_time: this.form.start_time,
-	  			end_time: this.form.end_time
+	  			start_time: new Date(this.form.start_time).getTime(),
+	  			end_time: new Date(this.form.end_time).getTime()
 	  		};
 	  		var err = validator.group_info(room);
-	  		if(!err) {	
+	  		if(!err) {
+	  			console.log(room);
 	  			networkApi.createRoom(this, "POST", room)
+	  				.then(() => {
+	  					router.go({name: "home"})
+	  				})
 	  				.catch((err) => {
 	  					console.log(err);
   				})
@@ -100,11 +119,11 @@ export default {
 	  		}
   		} else {
   			var room = {
-  				room_id: form.room_id,
+  				room_id: this.form.room_id,
   				modified_items: {
-  					description: form.description,
-  					start_time: form.start_time,
-  					end_time: form_end_time
+  					description: this.form.description,
+  					start_time: new Date(this.form.start_time).getTime(),
+  					end_time: new Date(this.form.end_time).getTime()
   				}
   			}
   			networkApi.modifyRoom(this, "POST", room)
@@ -113,6 +132,8 @@ export default {
 					})
   		}
   	}	
+	},
+	watch: {
 	},
 	 components: {
     Cell,
