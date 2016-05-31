@@ -35,6 +35,7 @@
         <template v-if="management === '投票管理'">
         </template>
         <template v-if="management === '文件管理'">
+          <m-file></m-file>
         </template>
         <template v-if="management === '消息管理'">
         </template>
@@ -49,6 +50,7 @@
 import {Tab, TabItem, Group, Flexbox, FlexboxItem} from 'vux'
 import ChatBox from './../ChatBox'
 import MHeader from './../MyHeader'
+import MFile from './partials/file-management-partial'
 import MGroup from './partials/group-management-partial'
 import {setCurRoom} from './../../vuex/actions'
 import { getId, getName, getMessages } from './../../vuex/getters'
@@ -82,6 +84,7 @@ export default {
     Flexbox,
     FlexboxItem,
     MHeader,
+    MFile,
     MGroup,
     ChatBox
   }

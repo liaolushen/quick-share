@@ -10,20 +10,14 @@
     </group>
   </div>
   <div class="breakline"></div>
-  <div class="right-part" v-if="groupFunc === 'gpInfo'">
+  <div class="right-part" v-show="groupFunc === 'gpInfo'">
     <m-group-form></m-group-form>
   </div>
-  <div class="right-part" v-if="groupFunc==='mbMang'">
-    <div class="search-wrapper">
-  	 <m-search></m-search>
-    </div>
-    <group>
-      <mem-cell name="kani"></mem-cell>
-      <mem-cell name="mike"></mem-cell>
-    </group>
+  <div class="right-part" v-show="groupFunc==='mbMang'">
+    <m-mem-man></m-mem-man>
   </div>
-  <div class="right-part" v-if="groupFunc==='gpQruc'">
-    <p>显示二维码</p>
+  <div class="right-part" v-show="groupFunc==='gpQruc'">
+    <div v-el:qrcode id="qrcode"></div>
   </div>	
 </template>
 
@@ -47,13 +41,21 @@
   margin-top: 20px;
 }
 
+#qrcode {
+  width: 100%;
+  height: 50%;
+  text-align: center;
+  margin-top: 50%;
+}
+
 </style>
 
 <script>
 import MGroupForm from './group-info-form'
-import {Group, Cell, Search} from 'vux'
+import MMemMan from './members-management'
+import {Group, Cell} from 'vux'
 import MemCell from './../../MemberCell'
-import MSearch from './../../MySearch'
+import { getCurRoom, getMembers } from './../../../vuex/getters'
 
 export default {
 	data() {
@@ -64,13 +66,31 @@ export default {
 	methods: {
     dlGroup: () => console.log('delete')
 	},
+  vuex: {
+    getters: {
+      room: getCurRoom,
+      members: getMembers
+    }
+  },
 	components: {
 		MGroupForm,
 		Group,
 		Cell,
 		MemCell	,
-		Search,
-		MSearch
-	}
+    MMemMan
+	},
+  ready() {
+    if(!this.room) {
+      console.log('why');
+      console.log($('#qrocde'));
+      $('#qrcode').append("请先创建房间");
+    } else {
+      //var url = "http://" + window.location.host + "/room/" + this.room.room_id;
+      var url = "http://" + "172.18.41.205:8089/#!" + "/chat-entrance/" + this.room.room_id;
+      //console.log($('#qrcode'));
+      //console.log(document.getElementById('#qrcode').innerhtml);
+      new QRCode(this.$els.qrcode, url);
+    }
+  }
 }
 </script>

@@ -54,7 +54,7 @@
 <script>
 
 import {setCurRoom, receiveMembers, receiveMessages, leaveRoom } from "./../vuex/actions"
-import { getCurRoom, getMembers } from "./../vuex/getters"
+import { getCurRoom, getMembers, getId } from "./../vuex/getters"
 import { networkApi } from "./../api/networkApi"
 
 export default {
@@ -88,7 +88,8 @@ export default {
 	},
 	vuex: {
 		getters: {
-			room: getCurRoom
+			room: getCurRoom,
+			id: getId
 		},
 		actions: {
 			setCurRoom,

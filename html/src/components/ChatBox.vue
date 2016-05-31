@@ -29,7 +29,7 @@
   <a id="transparent-button" class="transparent-button" v-link="{path:'/prop'}">...</a>
   <div id="msg-list" class="msg-list" style="padding-bottom: 70px;" v-el:list>
 
-    <message v-for="message in messages" :role="message.role" :name="message.nick_name" :content="message.content"></message>
+    <message v-for="message in messages" :role="message.role" :name="message.nick_name" :content="message.content" :uid="message.uid"></message>
   </div>
   <div id="input-area">
     <my-input></my-input>
@@ -57,17 +57,14 @@ export default {
     return {}
   },
   ready() {
-    console.log('who,hahahahaha');
-    console.log(this)
     $("#input-area").css("width", this.width);
     if(this.role === "manager") {
       $("#transparent-button").css("display", "none");
     }
-
 /*    if(socket === null && this.room) {
-      socket = io.connect("http://45.32.41.145.8888/chat");
+      socket = io.connect("http://45.32.41.145:8888/chat");
       socket.on('connect', () => {
-        socket.emit('join room', {room_id: room.room_id});
+        socket.emit('join room', {room_id: this.room.room_id});
       });
     }
     socket.on('system message', (message) => {
