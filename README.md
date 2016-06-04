@@ -272,6 +272,34 @@
 }
 ```
 
+### 获取房间信息
+
++ 接口：`/api/chat/get-room-info`
++ 调用要求：无
++ 方法：GET
++ 请求类型：`application/json`
++ 调用示例：
+
+```bash
+0.0.0.0:8888/api/chat/get-room-info?room_id=123456
+```
++ 返回示例：
+
+```bash
+{
+  "data": {
+    "description": "御坂美琴",
+    "end_time": 1463939797682,
+    "id": "123456",
+    "name": "御坂美琴の粉丝团1",
+    "start_time": 1463939795682
+  },
+  "status_code": 200,
+  "status_info": "ok"
+}
+```
+
+
 ## SOCKET发送接口
 
 ### 连接服务器

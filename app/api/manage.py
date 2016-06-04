@@ -5,7 +5,7 @@ from flask.ext.api import status
 from datetime import datetime
 from app import app, db, redis
 from app.common import generate_random_num_str, api_format
-from app.models.chat_mod import Room
+from app.models.chat_mod import Room, Message
 from app.models.manage_mod import Manager
 import time
 
@@ -70,6 +70,22 @@ def create_room():
             'end_time': end_time,
             'description': description
         }))
+
+
+@manage.route('/delete-room', methods=['POST'])
+def delete_room():
+    if 'namager_id' not in session:
+        return jsonify(api_format(status.HTTP_406_NOT_ACCEPTABLE, "you are not login"))
+    manager_id = session['manager_id']
+    room_id = request.get_json()['room_id']
+    result_room = Room.query.filter_by(id=room_id, manager_id=manager_id).first()
+    if result_room is None:
+        return jsonify(api_format(status.HTTP_404_NOT_FOUND, "room is not existed"))
+    room_messages = Message.query.filter_by(room_id=room_id).all()
+    db.session.delete(result_room)
+    db.session.delete(room_messages)
+    db.session.commit()
+    return jsonify(api_format(status.HTTP_200_OK, "delete finish", {"room_id": result_room.id}))
 
 
 @manage.route('/modify-room', methods=['POST'])

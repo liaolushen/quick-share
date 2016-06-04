@@ -45,6 +45,32 @@ def get_name():
     return jsonify(api_format(status.HTTP_404_NOT_FOUND, "not found"))
 
 
+@chat.route('/get-room-info', methods=['GET'])
+def get_room_info():
+    """Get room info of the pointed room
+
+    Args:
+        room_id: the room that pointed
+
+    Returns:
+        room_info
+    """
+
+    room_id = request.values['room_id']
+    room = Room.query.get(room_id)
+    if room is None:
+        return jsonify(api_format(status.HTTP_404_NOT_FOUND, "not found"))
+    else:
+        data = {
+            "id": room.id,
+            "name": room.name,
+            "start_time": room.start_time,
+            "end_time": room.end_time,
+            "description": room.description
+        }
+        return jsonify(api_format(status.HTTP_200_OK, "ok", data))
+
+
 @chat.route('/get-room-members', methods=['GET'])
 def get_room_members():
     """Get user_id list of the pointed room

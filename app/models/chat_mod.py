@@ -24,7 +24,7 @@ class Room(db.Model):
 
     def __repr__(self):
         return 'File(id=%s, room_manager=%s)'\
-            % (self.id, self.room_manager)
+            % (self.id, self.manager_id)
 
 
 class Message(db.Model):
