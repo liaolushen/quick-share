@@ -32,13 +32,29 @@ body {
 
 <script>
 import store from "./vuex/store";
-import { getId } from './vuex/getters'
+import { getId, getCurRoom } from './vuex/getters'
 
 
 module.exports = {
   data() {return {}},
-  store: store
+  store: store,
+  ready: () => {
+    console.log(store.state.id)
+    if(socket) {
+      $(window).on('beforeunload', function() {
+        if(socket) {
+          socket.emit('leave room', {room_id: this.room.room_id})
+        }
+      })
+    }
+    router.beforeEach((transition) => {
+      if (transition.to.auth && !store.state.id) {
+        transition.redirect('/');
+      } else {
+        transition.next();
+      }
+    });
+  }
 }
-
 </script>
 

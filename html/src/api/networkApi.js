@@ -1,9 +1,10 @@
 const config = {
-	url: 'http://45.32.41.145:8888',
+	//url: 'http://45.32.41.145:8888',
+	url: '',
 	headers: {
 		'Accept': 'application/json',
-		'Content-Type': 'application/json',
-		'mode': 'cors'
+		'Content-Type': 'application/json'
+		//'mode': 'no-cors'
 	},
 	interface: {
 		login: "/api/manage/login",
@@ -11,10 +12,28 @@ const config = {
 		modifyRoom: '/api/manage/modify-room',
 		createName: '/api/chat/create-name',
 		getName: '/api/chat/get-name',
+		getRoom: '/api/chat/get-room',
 		getMembers: '/api/chat/get-room-members',
 		getMessages: '/api/chat/get-room-messages',
 		getRoomList: '/api/manage/get-room-list'
 	}
+}
+
+// for the date python and javascript
+function dealWithDate(room_list) {
+	var new_room_list = [];
+	room_list.forEach((room) => {
+		var new_room = {};
+		for(var item in room) {
+			if(item === "start_time" || item === "end_time") {
+				new_room[item] = room[item] * 1000;
+			} else {
+				new_room[item] = room[item];
+			}
+			new_room_list.push(new_room);
+		}
+	});
+	return new_room_list;
 }
 
 const networkApi = {
@@ -46,6 +65,7 @@ const networkApi = {
 		}).then((res) => {
 			return res.json();
 		}).then((res) => {
+			console.log(res.data);
 			component.receiveMembers(res.data.user_list);
 		});
 	},
@@ -58,6 +78,13 @@ const networkApi = {
 		}).then((res) => {
 			return res.json();
 		}).then((res) => {
+			for(var i = 0 ; i < res.data.message_list.length; i++) {
+				if(component.id == res.data.message_list[i].uid) {
+					res.data.message_list[i].role = 'self';
+				} else {
+					res.data.message_list[i].role = 'other';
+				}
+			}
 			component.receiveMessages(res.data.message_list);
 			//return Promise.resolve();		
 		});
@@ -71,17 +98,36 @@ const networkApi = {
 		}).then((res) => {
 			return res.json();
 		}).then((res) => {
-			component.setName(res.data.nick_name);
-			component.setId(res.data.uid);
+			if(res.status_info === "ok") {
+				component.setName(res.data.nick_name);
+				component.setId(res.data.uid);
+				return Promise.resolve();
+			} else {
+				return Promise.reject(res.status_info);
+			}
+		})
+	},
+	getRoom: (component, method, data) => {
+		var url = config.url + config.interface.getRoom;
+		return fetch(url, {
+			credentials: 'include',
+			method: method,
+			headers: config.headers,
+			body: JSON.stringify(data)
+		}).then((res) => {
+			return res.json();
+		}).then((res) => {
+			component.setCurRoom(res.data);
 		})
 	},
 	createRoom: (component, method, data) => {
+		console.log(data);
 		var url = config.url + config.interface.createRoom
 		return fetch(url, {
 			credentials: 'include',			
 			method: method,
 			headers: config.headers,
-			body: data
+			body: JSON.stringify(data)
 		}).then((res) => {
 			return res.json();
 		}).then((res) => {
@@ -95,7 +141,7 @@ const networkApi = {
 			credentials: 'include',			
 			method: method,
 			headers: headers,
-			body: data
+			body:  JSON.stringify(data)
 		}).then((res) => {
 			return res.json();
 		}).then((res) => {
@@ -111,7 +157,7 @@ const networkApi = {
 		}).then((res) => {
 			return res.json();
 		}).then((res) => {
-			var room_list =res.data.room_list;
+			var room_list = res.data.room_list;
 			if(room_list) {
 				if(room_list.length !== 0) {
 					component.setRooms(room_list);
@@ -128,10 +174,11 @@ const networkApi = {
 			credentials: 'include',			
 			method: method,
 			headers: config.headers,
-			body: data
+			body:  JSON.stringify(data)
 		}).then((res) => {
 			return res.json();
-		}).then((dres) => {
+		}).then((res) => {
+			console.log(res);
 			component.setId(res.data.uid);
 			component.setName(res.data.nick_name);
 		})

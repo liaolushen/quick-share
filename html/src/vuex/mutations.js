@@ -51,7 +51,7 @@ export default {
 	//Array: members = [{},{}]
 	[types.RECEIVE_MEMBERS] (state, members) {
 		members.forEach(function (member) {
-			addMember(member);
+			addMember(state, member);
 		});
 	},
 
@@ -104,6 +104,7 @@ function delRoom(state, room) {
 }
 
 function addMember(state, member) {
+	console.log(state.members);
 	var isExist = false;
 	state.members.forEach(function (post) {
 		if(post.uid === member.uid) {

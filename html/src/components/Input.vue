@@ -99,7 +99,6 @@
   height: 270px;
 }
 
-
 .weui_btn {
   position: absolute;
   font-size: 14px;
@@ -186,22 +185,6 @@ export default {
       isEmotionShow: false
     }
   },
-/*  ready() {
-    $('#send').on('click', (event) => {
-      if (this.content.length <= 0) return;
-        this.isEmotionShow = false;
-        //this.sendMessage({'content': this.content, 'name': 'wo', 'role': 'self'});
-        this.content = '';      
-        var current_time = new Date().getTime()/1000;
-        var message = {
-          room_id: this.room.room_id,
-          content: this.content,
-          message: current_time
-        }
-        socket.emit('user message', message)
-      }
-    })
-  },*/
   watch: {
     'content': function(val, oldVal) {
       const flexOne = this.$els.realinput;
@@ -229,8 +212,15 @@ export default {
     send() {
       if (this.content.length <= 0) return;
       this.isEmotionShow = false;
-      this.sendMessage({'content': this.content, 'name': 'wo', 'role': 'self'});
-      this.content = '';
+      //this.sendMessage({'content': this.content, 'name': 'wo', 'role': 'self'});
+      this.content = '';      
+      var current_time = new Date().getTime();
+      var message = {
+        room_id: this.room.room_id,
+        content: this.content,
+        message: current_time
+      };
+      socket.emit('user message', message)
     },
     focus() {
       this.isEmotionShow = false;

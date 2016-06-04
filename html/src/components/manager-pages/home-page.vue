@@ -24,7 +24,7 @@
 		</m-header>
 		<div id="groups" class="clearfix">
 			<header>你所创建的群组</header>
-			<room-card v-for="room in roomList"  :room_name="room.room_name"  :start_time ="room.start_time" :end_time="room.end_time" :room_id="room.room_id" :description="room.description"></room-card>
+			<room-card v-for="room in roomList"  :room_name="room.room_name"  :start_time ="room.start_time | integer" :end_time="room.end_time | integer" :room_id="room.room_id" :description="room.description"></room-card>
 			<room-card></room-card>
 		</div>
 	</div>
@@ -33,7 +33,7 @@
 <script>
 import MHeader from './../MyHeader'
 import RoomCard from './../RoomCard'
-import { setCurRoom } from './../../vuex/actions'
+import { setCurRoom,recieveMessage,addMember } from './../../vuex/actions'
 import { getRooms, getId, getName } from './../../vuex/getters'
 
 export default {
@@ -41,18 +41,51 @@ export default {
 		getters: {
 			roomList: getRooms,
 			auth: getId,
-			name: getName
+			name: getName,
+			id: getId
 		},
 		actions: {
-			setCurRoom
+			setCurRoom,
+			addMember,
+			recieveMessage
 		}
 	},
-	route: {
+	filters: {
+		integer: (value) => {
+			return parseInt(value);
+		}
+	},
+	ready: () => {
+		if(socket) {
+	    socket.on('user update', (message) => {
+	      console.log('user update');
+	      console.log(message);
+	      if(message.flag === 'leave') {
+	        this.delMember({uid:message.uid, nick_name:message.nick_name})
+	        alert(message.nick_name, "leave")
+	      } else {
+	        this.addMember({uid:message.uid, nick_name: message.nick_name});
+	        alert(message.nick_name, "join");
+	      }
+	    });
+	    socket.on('user message', (message) => {
+	      console.log('user message');
+	      console.log(message);
+	      if(message.uid === this.id) {
+	        message.role = "self";
+	      } else {
+	        message.role = "other";
+	      }
+	      this.recieveMessage(message);
+	    });
+		}
+	},
+/*	route: {
 		activate (transition) {
-			console.log("adfa", this.auth);
+			console.log("auth:", this.auth);
 			!this.auth ? transition.redirect('/'):transition.next();
 		}
-	},
+	},*/
   components: {
 		MHeader,
 		RoomCard, 

@@ -33,11 +33,11 @@ export const joinRoom = ({ dispatch }, room) => {
 	dispatch('SET_CUR_ROOM', room);
 }
 
-export const memberJoin = ({ dispatch }, member) => {
+export const addMember = ({ dispatch }, member) => {
 	dispatch('ADD_MEMBER', member);
 }
 
-export const memberLeave = ({ dispatch }, member) => {
+export const delMember = ({ dispatch }, member) => {
 	dispatch('DEL_MEMBER', member);
 }
 

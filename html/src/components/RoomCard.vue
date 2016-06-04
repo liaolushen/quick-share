@@ -54,7 +54,7 @@
 <script>
 
 import {setCurRoom, receiveMembers, receiveMessages, leaveRoom } from "./../vuex/actions"
-import { getCurRoom, getMembers } from "./../vuex/getters"
+import { getCurRoom, getMembers, getId } from "./../vuex/getters"
 import { networkApi } from "./../api/networkApi"
 
 export default {
@@ -82,12 +82,14 @@ export default {
 	},
 	filters: {
 		date: (value) => {
+			//python and js difference
 			return new Date(value).toLocaleString();
 		}
 	},
 	vuex: {
 		getters: {
-			room: getCurRoom
+			room: getCurRoom,
+			id: getId
 		},
 		actions: {
 			setCurRoom,
@@ -103,8 +105,9 @@ export default {
 			if(this.room) {
 				if(this.room.room_id) {
 					if(this.room_id === this.room.room_id) {
-						router.go({name: 'group-management'});
+						router.go({name: 'group-management', params: {room_id: this.room.room.room_id}});
 					} else {
+						//socket.emit('leave room', {room_id: this.room.room_id});					
 						this.leaveRoom();
 					}
 				}
@@ -122,15 +125,16 @@ export default {
 					return networkApi.getMessages(this, "GET", this.room_id, "10");
 				})
 				.then(() => {
-					router.go({name: "group-management"})
+					router.go({name: "group-management", params: {room_id: this.room_id}})
 				})
 				.catch((err)=>{console.log(err)});
 		},
 		createRoom: function() {
 			if(this.room) {
 				this.leaveRoom();
+				//socket.emit('leave room', {room_id: this.room.room_id})
 			}
-			router.go({name: 'group-management'});
+			router.go({name: 'group-management', params: {room_id: "-1"}});
 		}
 	}
 }

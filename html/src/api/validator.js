@@ -7,13 +7,13 @@ var validator = {
 		}
 	},
 	group_info: (data) => {
-		for(value of room) {
-			if(value === "") {
+		console.log(data);
+		for(var item in data) {
+			if(data[item] === "") {
 				return "Please fill the form"
-			} else {
-				return null;
 			}
 		}
+		return null;
 	}
 }
 
