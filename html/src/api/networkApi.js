@@ -1,5 +1,6 @@
 const config = {
-	url: 'http://45.32.41.145:8888',
+	//url: 'http://45.32.41.145:8888',
+	url: '',
 	headers: {
 		'Accept': 'application/json',
 		'Content-Type': 'application/json'

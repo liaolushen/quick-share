@@ -36,7 +36,7 @@
 <template>
 	<div class="file-item">
 		<div class="item-icon">
-			<img :src="format" "alt="">
+			<img :src="format" alt="">
 		</div>
 		<div class="item-info">
 			<div class="item-name">{{file.name}}</div>
