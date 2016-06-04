@@ -20,4 +20,4 @@ def not_found(error):
 # Index Page
 @app.route('/')
 def index():
-    return redirect(url_for('view_manage.index'))
+    return render_template('index.html')

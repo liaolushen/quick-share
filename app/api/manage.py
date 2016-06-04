@@ -74,17 +74,17 @@ def create_room():
 
 @manage.route('/delete-room', methods=['POST'])
 def delete_room():
-    if 'namager_id' not in session:
+    if 'manager_id' not in session:
         return jsonify(api_format(status.HTTP_406_NOT_ACCEPTABLE, "you are not login"))
     manager_id = session['manager_id']
     room_id = request.get_json()['room_id']
     result_room = Room.query.filter_by(id=room_id, manager_id=manager_id).first()
     if result_room is None:
         return jsonify(api_format(status.HTTP_404_NOT_FOUND, "room is not existed"))
-    room_messages = Message.query.filter_by(room_id=room_id).all()
     db.session.delete(result_room)
-    db.session.delete(room_messages)
+    Message.query.filter_by(room_id=room_id).delete()
     db.session.commit()
+    redis.delete(room_id + ':message_num')
     return jsonify(api_format(status.HTTP_200_OK, "delete finish", {"room_id": result_room.id}))
 
 

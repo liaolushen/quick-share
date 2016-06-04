@@ -64,6 +64,32 @@
 }
 ```
 
+### 管理员删除房间
+
++ 接口：`/api/manage/delete-room`
++ 调用要求：需登陆
++ 方法：POST
++ 请求类型：`application/json`
++ 调用示例：
+
+```bash
+{
+  "room_id": "123456"
+}
+```
++ 返回示例：
+
+```bash
+# 调用成功
+{
+  "data": {
+    "room_id": "123456"
+  },
+  "status_code": 200,
+  "status_info": "delete finish"
+}
+```
+
 ### 管理员修改房间
 
 + 接口：`/api/manage/modify-room`
