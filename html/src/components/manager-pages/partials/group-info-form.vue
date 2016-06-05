@@ -1,7 +1,7 @@
 <template>
 	<div class="groups">	
 		<group title="群名称">
-			<x-input title="" :value.sync='form.room_name'></x-input>
+			<x-input title="" :value.sync='form.room_name' disabled></x-input>
 		</group>
 		<group title="群介绍">
 			<x-textarea :value.sync="form.description" :max="300" :show-counter="false"></x-textarea>

@@ -6,8 +6,9 @@ export function configRouter (router) {
       auth: false
     },
     '/room/:room_id': {
+      name: 'room',
       component: require('./components/user-pages/messages-page.vue'),
-      auth: false
+      auth: true
     },
     '/prop': {
       name: 'prop',
@@ -31,11 +32,8 @@ export function configRouter (router) {
     },
     '/chat-entrance/:room_id': {
       name: 'chat-entrance',
-      component: require('./components/user-pages/feedback-page.vue')
-    },
-    '/chat-entrance': {
-      name: 'chat-entrance',
-      component: require('./components/user-pages/chat-entrance-page.vue')
+      component: require('./components/user-pages/chat-entrance-page.vue'),
+      auth: false
     },
     '/home': {
       name: 'home',

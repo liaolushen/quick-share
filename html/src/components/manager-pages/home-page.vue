@@ -33,7 +33,7 @@
 <script>
 import MHeader from './../MyHeader'
 import RoomCard from './../RoomCard'
-import { setCurRoom,recieveMessage,addMember } from './../../vuex/actions'
+import { setCurRoom,recieveMessage,addMember,delMember } from './../../vuex/actions'
 import { getRooms, getId, getName } from './../../vuex/getters'
 
 export default {
@@ -47,6 +47,7 @@ export default {
 		actions: {
 			setCurRoom,
 			addMember,
+			delMember,
 			recieveMessage
 		}
 	},
@@ -80,12 +81,12 @@ export default {
 	    });
 		}
 	},
-/*	route: {
+	route: {
 		activate (transition) {
 			console.log("auth:", this.auth);
 			!this.auth ? transition.redirect('/'):transition.next();
 		}
-	},*/
+	},
   components: {
 		MHeader,
 		RoomCard, 

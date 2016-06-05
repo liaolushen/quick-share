@@ -25,6 +25,7 @@
 
 <script>
 import { Group, Cell } from "vux";
+import { setCurRoom,recieveMessage,addMember,delMember } from './../../vuex/actions'
 
 export default {
   components: {
@@ -34,6 +35,42 @@ export default {
   data() {
     return {
     }
-  }
+  },
+  vuex: {
+    getters: {
+
+    },
+    actions: {
+      setCurRoom,
+      addMember,
+      delMember,
+      recieveMessage
+    }
+  },
+  ready: () => {
+    if(socket) {
+      socket.on('user update', (message) => {
+        console.log('user update');
+        console.log(message);
+        if(message.flag === 'leave') {
+          this.delMember({uid:message.uid, nick_name:message.nick_name})
+          alert(message.nick_name, "leave")
+        } else {
+          this.addMember({uid:message.uid, nick_name: message.nick_name});
+          alert(message.nick_name, "join");
+        }
+      });
+      socket.on('user message', (message) => {
+        console.log('user message');
+        console.log(message);
+        if(message.uid === this.id) {
+          message.role = "self";
+        } else {
+          message.role = "other";
+        }
+        this.recieveMessage(message);
+      });
+    }
+  },
 }
 </script>

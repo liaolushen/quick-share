@@ -86,7 +86,9 @@ export default {
       $('#qrcode').append("请先创建房间");
     } else {
       //var url = "http://" + window.location.host + "/room/" + this.room.room_id;
-      var url = "http://" + "172.18.41.205:8089/#!" + "/chat-entrance/" + this.room.room_id;
+      var url = "http://172.18.41.222:8888/#!" + "/chat-entrance/" + this.room.room_id;
+      //var url = "http://" + document.domain + ":" + location.port + "/#!" + "/chat-entrance/" + this.room.room_id; 
+      console.log(url);
       //console.log($('#qrcode'));
       //console.log(document.getElementById('#qrcode').innerhtml);
       new QRCode(this.$els.qrcode, url);

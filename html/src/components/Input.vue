@@ -212,15 +212,16 @@ export default {
     send() {
       if (this.content.length <= 0) return;
       this.isEmotionShow = false;
-      //this.sendMessage({'content': this.content, 'name': 'wo', 'role': 'self'});
-      this.content = '';      
+/*      this.sendMessage({'content': this.content, 'name': 'wo', 'role': 'self'});*/     
       var current_time = new Date().getTime();
       var message = {
         room_id: this.room.room_id,
         content: this.content,
-        message: current_time
+        message_time: current_time
       };
+      console.log(message, socket);
       socket.emit('user message', message)
+      this.content = ''; 
     },
     focus() {
       this.isEmotionShow = false;

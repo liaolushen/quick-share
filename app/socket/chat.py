@@ -19,13 +19,23 @@ def connect():
 @socketio.on('join room', namespace='/chat')
 def join(message):
     room_id = message['room_id']
-    nick_name = session[room_id]
+    if 'manager_id' in session:
+        if room_id not in session:
+            session[room_id] = u"管理员"
+        if 'uid' not in session:
+            session['uid'] = str(session['manager_id'])
+    
+
     uid = session['uid']
     join_room(room_id)
     redis.sadd(room_id, room_id + ':' + uid)
+    emit('user update', {'flag': 'join', 'uid': uid, 'nick_name': session[room_id]}, room=room_id)
 
     emit('system message', {'content': session[room_id] + u'加入了房间' + message['room_id']}, room=room_id)
-    emit('user update', {'flag': 'join', 'uid': uid, 'nick_name': nick_name}, room=room_id)
+    # print session
+    # print 'adfa'
+    # room_id = message['room_id']
+    # emit('system message', {'content': u'加入了房间' + message['room_id']}, room=room_id)
 
 
 @socketio.on('leave room', namespace='/chat')
@@ -65,4 +75,5 @@ def user_message(message):
         )
     )
     db.session.commit()
+    print message
     emit('user message', message, room=room_id)

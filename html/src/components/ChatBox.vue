@@ -61,9 +61,12 @@ export default {
     if(this.role === "manager") {
       $("#transparent-button").css("display", "none");
     }
-/*    if(socket === null && this.room) {
-      socket = io.connect("http://45.32.41.145:8888/chat");
+    console.log('this.room')
+    console.log(this.room, this.room.room_id);
+    if(socket === null && this.room) {
+      socket = io.connect('http://' + document.domain + ':' + location.port + "/chat");
       socket.on('connect', () => {
+        console.log(this.room.room_id)
         socket.emit('join room', {room_id: this.room.room_id});
       });
     }
@@ -85,14 +88,14 @@ export default {
     });
     socket.on('user message', (message) => {
       console.log('user message');
-      console.log(message);
+      console.log(message, this.id);
       if(message.uid === this.id) {
         message.role = "self";
       } else {
         message.role = "other";
       }
       this.recieveMessage(message);
-    });*/
+    });
   }, 
   vuex: {
     getters: {

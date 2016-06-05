@@ -62,7 +62,7 @@ def get_room_info():
         return jsonify(api_format(status.HTTP_404_NOT_FOUND, "not found"))
     else:
         data = {
-            "id": room.id,
+            "room_id": room.id,
             "name": room.name,
             "start_time": room.start_time,
             "end_time": room.end_time,

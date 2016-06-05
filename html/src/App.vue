@@ -51,6 +51,7 @@ module.exports = {
       if (transition.to.auth && !store.state.id) {
         transition.redirect('/');
       } else {
+        console.log(transition);
         transition.next();
       }
     });

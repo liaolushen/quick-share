@@ -12,7 +12,6 @@
 
 import ChatBox from './../ChatBox'
 
-
 export default {
   components: {
     ChatBox

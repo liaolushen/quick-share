@@ -12,7 +12,7 @@ const config = {
 		modifyRoom: '/api/manage/modify-room',
 		createName: '/api/chat/create-name',
 		getName: '/api/chat/get-name',
-		getRoom: '/api/chat/get-room',
+		getRoom: '/api/chat/get-room-info',
 		getMembers: '/api/chat/get-room-members',
 		getMessages: '/api/chat/get-room-messages',
 		getRoomList: '/api/manage/get-room-list'
@@ -52,7 +52,7 @@ const networkApi = {
 				return Promise.reject(res.status_info);
 			} else {
 				component.setName(res.data.manager_name);
-				component.setId(res.data.manager_id);
+				component.setId(res.data.manager_id.toString());
 			}
 		})
 	},
@@ -90,7 +90,7 @@ const networkApi = {
 		});
 	},
 	getName: (component, method, room_id) => {
-		var url = config.url + config.interface.getName + "?room_id" + room_id;
+		var url = config.url + config.interface.getName + "?room_id=" + room_id;
 		return fetch(url, {
 			credentials: 'include',			
 			method: method,
@@ -107,13 +107,12 @@ const networkApi = {
 			}
 		})
 	},
-	getRoom: (component, method, data) => {
-		var url = config.url + config.interface.getRoom;
+	getRoom: (component, method, room_id) => {
+		var url = config.url + config.interface.getRoom + "?room_id=" + room_id;
 		return fetch(url, {
 			credentials: 'include',
 			method: method,
-			headers: config.headers,
-			body: JSON.stringify(data)
+			headers: config.headers
 		}).then((res) => {
 			return res.json();
 		}).then((res) => {
