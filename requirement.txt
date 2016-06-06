@@ -13,3 +13,4 @@ flask-api
 Flask-And-Redis
 redis
 flask-cors
+eventlet

@@ -8,5 +8,5 @@ redis-cli flushall
 rm -rf app/static
 rm app/templates/index.html
 cp -r html/dist/static app/
-cp html/dist/index.html app/templates/index.html
+ cp html/dist/index.html app/templates/index.html
 python run.py

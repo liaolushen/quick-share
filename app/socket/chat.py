@@ -55,6 +55,7 @@ def user_message(message):
     room_id = message['room_id']
     message_time = int(message['message_time'])
     content = message['content']
+
     nick_name = session[room_id]
     serial_number = redis.incr(room_id + ':message_num')
     message = {
@@ -75,5 +76,6 @@ def user_message(message):
         )
     )
     db.session.commit()
+    print '###########'
     print message
     emit('user message', message, room=room_id)

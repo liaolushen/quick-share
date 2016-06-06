@@ -64,6 +64,7 @@ export default {
     console.log('this.room')
     console.log(this.room, this.room.room_id);
     if(socket === null && this.room) {
+      // socket = io.connect('/chat', {port: 8888, rememberTransport: false});
       socket = io.connect('http://' + document.domain + ':' + location.port + "/chat");
       socket.on('connect', () => {
         console.log(this.room.room_id)
