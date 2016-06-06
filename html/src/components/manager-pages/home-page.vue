@@ -63,10 +63,10 @@ export default {
 	      console.log(message);
 	      if(message.flag === 'leave') {
 	        this.delMember({uid:message.uid, nick_name:message.nick_name})
-	        alert(message.nick_name, "leave")
+	        console.log(message.nick_name, "leave")
 	      } else {
 	        this.addMember({uid:message.uid, nick_name: message.nick_name});
-	        alert(message.nick_name, "join");
+	        console.log(message.nick_name, "join");
 	      }
 	    });
 	    socket.on('user message', (message) => {

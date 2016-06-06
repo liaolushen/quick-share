@@ -82,7 +82,6 @@ export default {
 	},
 	filters: {
 		date: (value) => {
-			//python and js difference
 			return new Date(value).toLocaleString();
 		}
 	},
@@ -105,9 +104,11 @@ export default {
 			if(this.room) {
 				if(this.room.room_id) {
 					if(this.room_id === this.room.room_id) {
-						router.go({name: 'group-management', params: {room_id: this.room.room.room_id}});
+						router.go({name: 'group-management', params: {room_id: this.room_id}});
 					} else {
-						//socket.emit('leave room', {room_id: this.room.room_id});					
+						socket.emit('leave room', {room_id: this.room.room_id});			
+						socket.emit('disconnect');
+						socket = null;
 						this.leaveRoom();
 					}
 				}
@@ -132,7 +133,9 @@ export default {
 		createRoom: function() {
 			if(this.room) {
 				this.leaveRoom();
-				//socket.emit('leave room', {room_id: this.room.room_id})
+				socket.emit('leave room', {room_id: this.room.room_id});			
+				socket.emit('disconnect');
+				socket = null;
 			}
 			router.go({name: 'group-management', params: {room_id: "-1"}});
 		}
