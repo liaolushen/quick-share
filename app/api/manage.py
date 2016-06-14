@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import Blueprint, request, render_template, redirect,\
-                    url_for, session, current_app, jsonify
+from flask import Blueprint, request, session, jsonify
 from flask.ext.api import status
 from datetime import datetime
 from app import app, db, redis

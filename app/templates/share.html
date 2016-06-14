@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>UPLOADER</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='share_test/style.css') }}">
+</head>
+<body>
+  <div class="wrapper">
+    <h2 class="ui-title">Submit Your File</h2>
+    <h3 class="ui-subtitle">Note that file size must <= 10MB :)</h3>
+    <button class="ui-button ui-blue" id="upload">上传</button>
+    <div id="drop-area" class="ui-drop-area">
+      <ul id="file-list" class="ui-list">
+        <h3 class="ui-small ui-subtitle">Drag a file here or <a class="ui-link-button" id="browse">browse</a> for a file to upload.</h3>
+      </ul>
+    </div>
+  </div>
+  <div class="ui-mask" id="mask">
+    <div class="ui-alert"></div>
+  </div>
+  <script src="{{ url_for('static', filename='flow.js') }}"></script>
+  <script src="{{ url_for('static', filename='share_test/app.js') }}"></script>
+</body>

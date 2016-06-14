@@ -5,8 +5,10 @@
 redis-cli flushall
 
 # 运行应用服务器
-rm -rf app/static
-rm app/templates/index.html
-cp -r html/dist/static app/
- cp html/dist/index.html app/templates/index.html
+# rm -rf app/static
+# rm app/templates/index.html
+# cp -r html/dist/static app/
+# cp html/dist/index.html app/templates/index.html
+
+# 添加测试文件
 python run.py

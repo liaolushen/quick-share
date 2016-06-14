@@ -2,15 +2,6 @@ from flask import session, render_template, redirect, url_for
 from flask.ext.api import status
 from app import app
 
-from manage import manage
-from share import share
-from chat import chat
-
-
-app.register_blueprint(manage, url_prefix='/manage')
-app.register_blueprint(share, url_prefix='/share')
-app.register_blueprint(chat, url_prefix='/chat')
-
 # Sample HTTP error handling
 @app.errorhandler(404)
 def not_found(error):
@@ -21,3 +12,9 @@ def not_found(error):
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+# Test file upload
+@app.route('/share')
+def share():
+    return render_template('share.html')

@@ -49,7 +49,6 @@ uid = str(uuid.uuid4())
 nick_name = u'开哥'
 room_id = '123456'
 redis.sadd(room_id, room_id + ':' + uid)
-print 'test'
 redis.hmset(room_id + ':' + uid, {'uid': uid, 'nick_name': nick_name})
 
 # 用户1说话

@@ -324,7 +324,57 @@
   "status_info": "ok"
 }
 ```
+### 文件上传
++ 接口： `/api/share/upload`
++ 调用要求： 无
++ 方法：GET, POST
++ 调用方法：用flowjs来进行上传
++ 额外参数：roomId
++ 调用示例：
+```js
+var flow = new Flow({
+  target: '/api/share/upload', // target path
+  simultaneousUploads: 1, // 设置不能同步上传
+  speedSmoothingFactor: 0.02,
+  query: {
+    'roomId': '123456'
+  }
+});
+```
 
+### 文件下载
++ 接口: `/api/share/download`
++ 调用要求: 无
++ 方法: GET
++ 调用示例: `http://0.0.0.0:8888/api/share/download?file_id=1`
+
+### 获取房间文件列表
++ 接口：`/api/share/get-file-list`
++ 调用要求：无
++ 方法：GET
++ 调用示例: `0.0.0.0:8888/api/share/get-file-list?room_id=123456`
++ 返回示例：
+```
+{
+  "data": {
+    "file_list": [
+      {
+        "file_format": "jpg",
+        "file_name": "命运石之门.jpg",
+        "file_size": 180478
+      },
+      {
+        "file_format": "jpg",
+        "file_name": "quick_share.jpg",
+        "file_size": 85136
+      }
+    ],
+    "room_id": "123456"
+  },
+  "status_code": 200,
+  "status_info": "ok"
+}
+```
 
 ## SOCKET发送接口
 

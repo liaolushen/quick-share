@@ -6,8 +6,8 @@ import os
 class Config(object):
     DEBUG = False
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-    UPLOAD_FOLDER = '/tmp/uploads'
-    TMP_UPLOAD_FOLDER = '/tmp/uploads/tmp'
+    UPLOAD_FOLDER = '/tmp'
+    TMP_UPLOAD_FOLDER = '/tmp'
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     SECRET_KEY = 'CAN YOU GUESS ME?'
 
