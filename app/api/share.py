@@ -82,6 +82,7 @@ def get_file_list():
     file_list = []
     for file_item in result_list:
         file_list.append({
+            'file_id': file_item.id,
             'file_name': file_item.file_name,
             'file_format': file_item.file_format,
             'file_size': file_item.file_size

@@ -360,11 +360,13 @@ var flow = new Flow({
     "file_list": [
       {
         "file_format": "jpg",
+        "file_id": 1,
         "file_name": "命运石之门.jpg",
         "file_size": 180478
       },
       {
         "file_format": "jpg",
+        "file_id": 2,
         "file_name": "quick_share.jpg",
         "file_size": 85136
       }
