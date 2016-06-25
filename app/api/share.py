@@ -60,8 +60,12 @@ def upload_file():
                 os.path.join(app.config['UPLOAD_FOLDER'], str(new_file.id)))
             db.session.delete(tmp_file)
         db.session.commit()
-        print File.query.all()
-        return "OK", status.HTTP_200_OK
+        return jsonify(api_format(status.HTTP_200_OK, "ok", {
+            'file_id': new_file.id,
+            'file_name': new_file.file_name,
+            'file_format': new_file.file_format,
+            'file_size': new_file.file_size
+        })), status.HTTP_200_OK
 
 @share.route('/download', methods=['GET'])
 def download_file():

@@ -342,6 +342,20 @@ var flow = new Flow({
 });
 ```
 
++ 上传成功
+```
+{
+  "data": {
+    "file_format": "mp3",
+    "file_id": 1,
+    "file_name": "\u306f\u3064\u304b.mp3",
+    "file_size": 4104
+  },
+  "status_code": 200,
+  "status_info": "ok"
+}
+```
+
 ### 文件下载
 + 接口: `/api/share/download`
 + 调用要求: 无
