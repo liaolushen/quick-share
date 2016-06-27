@@ -1,10 +1,10 @@
 const config = {
-	//url: 'http://45.32.41.145:8888',
+/*	url: 'http://45.32.41.145:8888',*/
 	url: '',
 	headers: {
 		'Accept': 'application/json',
 		'Content-Type': 'application/json'
-		//'mode': 'no-cors'
+/*		'mode': 'no-cors'*/
 	},
 	interface: {
 		login: "/api/manage/login",
@@ -15,28 +15,13 @@ const config = {
 		getRoom: '/api/chat/get-room-info',
 		getMembers: '/api/chat/get-room-members',
 		getMessages: '/api/chat/get-room-messages',
-		getRoomList: '/api/manage/get-room-list'
+		getRoomList: '/api/manage/get-room-list',
+		getFiles: '/api/share/get-file-list'
 	}
 }
 
-// for the date python and javascript
-function dealWithDate(room_list) {
-	var new_room_list = [];
-	room_list.forEach((room) => {
-		var new_room = {};
-		for(var item in room) {
-			if(item === "start_time" || item === "end_time") {
-				new_room[item] = room[item] * 1000;
-			} else {
-				new_room[item] = room[item];
-			}
-			new_room_list.push(new_room);
-		}
-	});
-	return new_room_list;
-}
-
 const networkApi = {
+
 	login: (component, method, data) => {
 		var url = config.url + config.interface.login;
 		return fetch(url, {
@@ -53,6 +38,7 @@ const networkApi = {
 			} else {
 				component.setName(res.data.manager_name);
 				component.setId(res.data.manager_id.toString());
+				component.setRole('manager');
 			}
 		})
 	},
@@ -69,7 +55,8 @@ const networkApi = {
 			component.receiveMembers(res.data.user_list);
 		});
 	},
-	getMessages: (component, method, room_id, message_num) => {
+	getMessages: (component, method, room_id) => {
+		var message_num = 10;
 		var url = config.url + config.interface.getMessages + "?room_id=" + room_id + "&&message_num=" + message_num;
 		return fetch(url, {
 			credentials: 'include',			
@@ -98,9 +85,12 @@ const networkApi = {
 		}).then((res) => {
 			return res.json();
 		}).then((res) => {
+			console.log('getName')
+			console.log(res)
 			if(res.status_info === "ok") {
 				component.setName(res.data.nick_name);
 				component.setId(res.data.uid);
+				component.setRole('user')
 				return Promise.resolve();
 			} else {
 				return Promise.reject(res.status_info);
@@ -120,7 +110,6 @@ const networkApi = {
 		})
 	},
 	createRoom: (component, method, data) => {
-		console.log(data);
 		var url = config.url + config.interface.createRoom
 		return fetch(url, {
 			credentials: 'include',			
@@ -131,15 +120,14 @@ const networkApi = {
 			return res.json();
 		}).then((res) => {
 			component.createRoom(res.data);
-			component.setCurRoom(res.data);
 		})
 	},
-	modifyRoom: (componnent, method, data) => {
+	modifyRoom: (component, method, data) => {
 		var url = config.url + config.interface.modifyRoom;
 		return fetch(url, {
 			credentials: 'include',			
 			method: method,
-			headers: headers,
+			headers: config.headers,
 			body:  JSON.stringify(data)
 		}).then((res) => {
 			return res.json();
@@ -180,6 +168,25 @@ const networkApi = {
 			console.log(res);
 			component.setId(res.data.uid);
 			component.setName(res.data.nick_name);
+			component.setRole('user');
+		})
+	},
+
+	
+	//file parts
+	getFiles: (component, method, room_id) => {
+		var url = config.url + config.interface.getFiles + "?room_id=" + room_id;
+		console.log(url)
+		return fetch(url, {
+			credentials: 'include',
+			method: method,
+			headers: config.headers
+		}).then((res) => {
+			console.log('getFiles')
+			return res.json();
+		}).then((res) => {
+			console.log(res)
+			component.receiveFiles(res.data.file_list);
 		})
 	}
 }

@@ -52,9 +52,7 @@ button {
 <script>
 import { networkApi } from "./../../api/networkApi"
 import { validator } from "./../../api/validator"
-import { setName, setId, setRooms } from "./../../vuex/actions"
-//import {} from './../vuex/getter'
-
+import { setName, setId, setRooms, setRole } from "./../../vuex/actions"
 
 export default {
 	data() {
@@ -69,6 +67,7 @@ export default {
 		actions: {
 			setName,
 			setId,
+			setRole,
 			setRooms
 		}
 	},
@@ -87,9 +86,11 @@ export default {
 						})
 					})
 					.then(() => {
+						console.log('fa')
 						router.go({name: 'home'});
 					})
 					.catch((err) => {
+						console.log('af')
 						alert(err);
 				})
 			} else {

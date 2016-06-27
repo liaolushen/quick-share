@@ -21,7 +21,7 @@
     </m-header>
     <div id="group-manage-body">
       <div id="chatbox-part">
-        <chat-box width="33%" role="manager"></chat-box>
+        <chat-box width="33%"></chat-box>
       </div>
       <div id="management-part">
         <div id="group-info-header">
@@ -32,13 +32,17 @@
         <template v-if="management === '群管理'">
           <m-group></m-group>
         </template>
+        <!--
         <template v-if="management === '投票管理'">
         </template>
+        -->
         <template v-if="management === '文件管理'">
           <m-file></m-file>
         </template>
+        <!--
         <template v-if="management === '消息管理'">
         </template>
+        -->
       </div>
      </div>
 
@@ -58,17 +62,10 @@ import { getId, getName, getMessages } from './../../vuex/getters'
 export default {
   data() {
     return {
-      managerList: ['群管理', '投票管理', '文件管理', '消息管理'],
+    //  managerList: ['群管理', '投票管理', '文件管理', '消息管理'],
+      managerList: ['群管理', '文件管理'],
       management: '群管理',
-      res: [{title: 'kdlsag'}]
     }
-  },
-  route: {
-/*    activate (transition) {
-      !this.auth ? transition.redirect('/'):transition.next();
-    }*/
-  }, 
-  methods: {
   },
   vuex: {
     getters: {

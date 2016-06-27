@@ -8,12 +8,16 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    name: null,
-    id: null,
+    user: {
+      name: null,
+      id: null,
+      role: null
+    },
     rooms: [],
     room: null, //current room
     members: [], //members for the current room
-    messages: [] //messages for the current room    
+    messages: [], //messages for the current room
+    files: []
   },
   mutations,
   middlewares: process.env.NODE_ENV !== 'production'

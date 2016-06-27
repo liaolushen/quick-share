@@ -26,9 +26,10 @@
 </style>
 
 <template>
-  <a id="transparent-button" class="transparent-button" v-link="{path:'/prop'}">...</a>
+  
+  <a v-if="role === 'user'" id="transparent-button" class="transparent-button" v-link="{path:'/prop'}">...</a>
+  
   <div id="msg-list" class="msg-list" style="padding-bottom: 70px;" v-el:list>
-
     <message v-for="message in messages" :role="message.role" :name="message.nick_name" :content="message.content" :uid="message.uid"></message>
   </div>
   <div id="input-area">
@@ -39,18 +40,14 @@
 <script>
 import Message from './Message'
 import MyInput from './Input'
-import { getMessages, getCurRoom,getId } from "./../vuex/getters"
-import { addMember, delMember, recieveMessage } from './../vuex/actions'
+import { getMessages, getCurRoom,getId, getRole } from "./../vuex/getters"
+import { addMember, delMember, receiveMessage } from './../vuex/actions'
 
 export default {
   props: {
     width: {
       type: String,
       default: "100%"
-    },
-    role: {
-      type: String,
-      default: 'user'
     }
   },
   data() {
@@ -69,43 +66,48 @@ export default {
         socket.emit('join room', {room_id: this.room.room_id});
       });
     }
-    socket.on('system message', (message) => {
-      console.log('system message');
-      console.log(message);
-      message.role = "system";
-    });
-    socket.on('user update', (message) => {
-      console.log('user update');
-      console.log(message);
-      if(message.flag === 'leave') {
-        this.delMember({uid:message.uid, nick_name:message.nick_name})
-        console.log(message.nick_name, "leave")
-      } else {
-        this.addMember({uid:message.uid, nick_name: message.nick_name});
-        console.log(message.nick_name, "join");
-      }
-    });
-    socket.on('user message', (message) => {
-      console.log('user message');
-      console.log(message, this.id);
-      if(message.uid === this.id) {
-        message.role = "self";
-      } else {
-        message.role = "other";
-      }
-      this.recieveMessage(message);
-    });
+    //用于防止直接从home进入创建房间时，socket为空的情况；
+    if(socket) {
+      socket.on('system message', (message) => {
+        console.log('system message');
+        console.log(message);
+        message.role = "system";
+      });
+      socket.on('user update', (message) => {
+        console.log('user update');
+        console.log(message);
+        if(message.flag === 'leave') {
+          this.delMember({uid:message.uid, nick_name:message.nick_name})
+          console.log(message.nick_name, "leave")
+        } else {
+          this.addMember({uid:message.uid, nick_name: message.nick_name});
+          console.log(message.nick_name, "join");
+        }
+      });
+      socket.on('user message', (message) => {
+        console.log('user message');
+        console.log(this);
+        console.log(message, this.id, message.uid);
+        if(message.uid === this.id) {
+          message.role = "self";
+        } else {
+          message.role = "other";
+        }
+        this.receiveMessage(message);
+      });
+    }
   }, 
   vuex: {
     getters: {
       messages: getMessages,
       room: getCurRoom,
-      id: getId
+      id: getId,
+      role: getRole
     },
     actions: {
       delMember,
       addMember,
-      recieveMessage
+      receiveMessage
     }
   },
   watch: {

@@ -220,7 +220,6 @@ export default {
         message_time: current_time
       };
       console.log(message, socket);
-      // socket.emit('user message', {room_id: this.room.room_id, content: '你好', message_time: current_time})
       socket.emit('user message', message)
       this.content = ''; 
     },

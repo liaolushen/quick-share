@@ -3,42 +3,59 @@
 		float: left;
 		display: inline-block;
 		background: #FFFFFF;
-		width: 20%;
-		min-height: 150px;
-		padding: 20px 20px 0 20px;
+		width: 15%;
+		height: 180px;
+		padding: 10px 20px 0 20px;
 		margin: 10px 15px;
+		overflow: hidden;
+		transition: background-color, 0.8s
+	}
+	.ui_card:hover {
+		background-color: #8DD7FF;
 	}
 	.ui_card_hd {
 		width: 90%;
-		font-size: 25px;
+		font-size: 20px;
+		height: 30%;
 		color: black;
-		margin-bottom: 10px
+		margin-bottom: 10px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.ui_card_hd p {
+		padding-top: 10%;
 	}
 	.ui_card_ft {
-		color: #D7D5D3;
+		color: gray;
 		border-top: 1px solid #D7D5D3;
-		width: 50%;
+		width: 100%;
+		height: 70%;
 		font-size: 15px;
-		line-height: 1.2
+		line-height: 1.2;
+		padding-top: 10px;
 	}
-	
-	.ui_card_add  {
+	.room_time {
+		text-indent: 15px;
+		padding-bottom: 10px;
 	}
 	p.add {
 		font-size: 70px;
+		margin-top: 15%;
 		text-align: center
 	}
 </style>
 
 <template>
-	<template v-if="room_name !== ''">
+	<template v-if="room">
 		<div class="ui_card" @click="enterRoom">
 			<div class="ui_card_hd">
-				<p>{{room_name}}</p>
+				<p>{{room.room_name}}</p>
 			</div>
 			<div class="ui_card_ft">
-				<p>{{start_time | date}}</p>
-				<p>{{end_time | date}}</p>
+				<p>开始时间：</p>
+				<p class="room_time">{{room.start_time | date}}</p>
+				<p>结束时间 :</p>
+				<p class="room_time">{{room.end_time | date}}</p>
 			</div>
 		</div>
 	</template>
@@ -53,33 +70,12 @@
 
 <script>
 
-import {setCurRoom, receiveMembers, receiveMessages, leaveRoom } from "./../vuex/actions"
+import {setCurRoom, receiveMembers, receiveMessages, leaveRoom,receiveFiles } from "./../vuex/actions"
 import { getCurRoom, getMembers, getId } from "./../vuex/getters"
 import { networkApi } from "./../api/networkApi"
 
 export default {
-	props: {
-		room_name: {
-			type: String,
-			default: ''
-		},
-		start_time: {
-			type: Number,
-			default: ''
-		},
-		end_time: {
-			type: Number,
-			default: ''
-		},
-		room_id: {
-			type: String,
-			default: ''
-		},
-		description: {
-			type: String,
-			default: ''
-		}
-	},
+	props: ['room'],
 	filters: {
 		date: (value) => {
 			return new Date(value).toLocaleString();
@@ -87,7 +83,7 @@ export default {
 	},
 	vuex: {
 		getters: {
-			room: getCurRoom,
+			curRoom: getCurRoom,
 			id: getId
 		},
 		actions: {
@@ -96,45 +92,47 @@ export default {
 			receiveMessages,
 			leaveRoom,
 			getMembers,
+			receiveFiles
 		}
 	},
 	methods: {
 		enterRoom: function() {
 			//当前房间存在，如果选择的与上次选择的一样就直接进入；否则就重置
-			if(this.room) {
-				if(this.room.room_id) {
-					if(this.room_id === this.room.room_id) {
-						router.go({name: 'group-management', params: {room_id: this.room_id}});
-					} else {
-						socket.emit('leave room', {room_id: this.room.room_id});			
-						socket.emit('disconnect');
-						socket = null;
-						this.leaveRoom();
-					}
+			if(this.curRoom) {
+				if(this.room.room_id === this.curRoom.room_id) {
+					router.go({name: 'group-management', params: {room_id: this.room.room_id}});
+					return;
+				} else {
+					socket.emit('leave room', {room_id: this.curRoom.room_id});			
+					socket.emit('disconnect');
+					socket = null;
+					this.leaveRoom();
 				}
 			}
 			this.setCurRoom({
-				room_name: this.room_name,
-				description: this.description,
-				room_id: this.room_id,
-				start_time: this.start_time,
-				end_time: this.end_time,
+				room_name: this.room.room_name,
+				description: this.room.description,
+				room_id: this.room.room_id,
+				start_time: this.room.start_time,
+				end_time: this.room.end_time,
 			});
 
-			networkApi.getMembers(this, "GET", this.room_id)
+			networkApi.getMembers(this, "GET", this.room.room_id)
 				.then(() => {
-					return networkApi.getMessages(this, "GET", this.room_id, "10");
+					return networkApi.getMessages(this, "GET", this.room.room_id, "10");
 				})
 				.then(() => {
-					router.go({name: "group-management", params: {room_id: this.room_id}})
+					return networkApi.getFiles(this, "GET", this.room.room_id);
+				})
+				.then(() => {
+					router.go({name: "group-management", params: {room_id: this.room.room_id}})
 				})
 				.catch((err)=>{console.log(err)});
 		},
 		createRoom: function() {
-			if(this.room) {
+			if(this.curRoom) {
+				socket.emit('leave room', {room_id: this.curRoom.room_id});			
 				this.leaveRoom();
-				socket.emit('leave room', {room_id: this.room.room_id});			
-				socket.emit('disconnect');
 				socket = null;
 			}
 			router.go({name: 'group-management', params: {room_id: "-1"}});

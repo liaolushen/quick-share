@@ -81,7 +81,6 @@ export default {
 	},
   ready() {
     if(!this.room) {
-      console.log('why');
       console.log($('#qrocde'));
       $('#qrcode').append("请先创建房间");
     } else {

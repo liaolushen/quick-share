@@ -1,10 +1,14 @@
 export const getId = state => {
-	return state.id ? state.id : -1;
+	return state.user.id ? state.user.id : -1;
 	//return 1
 }
 
 export const getName = state => {
-	return state.name;
+	return state.user.name;
+}
+
+export const getRole = state => {
+	return state.user.role;
 }
 
 export const getRooms = state => {
@@ -38,4 +42,16 @@ export const getMembers = state => {
 
 export const getMessages = state => {
 	return state.messages;
+}
+
+export const getFiles = state => {
+	return state.files;
+}
+
+export const getFileById = (state, id) => {
+	for(var i = 0, len = state.files; i < len; i++) {
+		if(state.files[i].file_id == id) {
+			return state.files[i]
+		}
+	}
 }

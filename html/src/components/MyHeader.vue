@@ -9,7 +9,7 @@
         <div class="header-more"></div>
         <ul>
           <li v-link="{name: 'home'}">主页</li>
-          <li>注销</li>
+          <li @click="reload">注销</li>
         </ul>
       </div>
     </div>
@@ -19,12 +19,8 @@
 <script>
 export default {
   methods: {
-    onClickBack: function () {
-      if (this.leftOptions.preventGoBack) {
-        this.$emit('on-click-back')
-      } else {
-        history.back()
-      }
+    reload: function() {
+      window.location.reload();
     }
   }
 }

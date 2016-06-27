@@ -4,32 +4,37 @@
 	text-align: center;
 	font-size: 20px;
 }
+.ui-list {
+	height: 300px;
+	overflow: auto;
+}
 </style>
 <template>
 	<div class="ui-list">
 		<template v-if="lists.length === 0">
-			<div class = "empty">空空如野</div>
+			<div class = "empty">暂无文件</div>
 		</template>
-		<file-item v-for="item in lists" :file="item" :index="$index" v-on:remove="remove"></file-item>
+		<file-item v-for="item in lists" :file="item"></file-item>
 	</div>
 </template>
 
 <script>
 
 import FileItem from './FileItem'
-
+import { getCurRoom,getFiles } from "./../vuex/getters"
+import { addFile } from './../vuex/actions'
 export default {
 	data() {
 		return {
-			lists: []
 		}
 	},
-	methods: {
-		add: function(file) {
-			this.lists.push(file);
+	vuex: {
+		getters: {
+			room: getCurRoom,
+			lists: getFiles
 		},
-		remove: function(index) {
-			this.lists.splice(index, 1);
+		actions: {
+			addFile
 		}
 	},
 	components: {
