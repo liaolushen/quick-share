@@ -13,6 +13,7 @@ export function configRouter (router) {
     '/prop': {
       name: 'prop',
       component: require('./components/user-pages/property-page.vue'),
+      auth: true
     },
     '/qrcode': {
       name: 'qrcode',
@@ -21,14 +22,12 @@ export function configRouter (router) {
     '/files': {
       name: 'files',
       component: require('./components/user-pages/files-page.vue'),
+      auth: false
     },
-    '/history': {
-      name: 'history',
-      component: require('./components/user-pages/history-page.vue')
-    },
-    '/feedback': {
-      name: 'feedback',
-      component: require('./components/user-pages/feedback-page.vue')
+    '/file/:file_id': {
+      name: 'file',
+      component: require('./components/user-pages/one-file-page.vue'),
+      auth: true
     },
     '/chat-entrance/:room_id': {
       name: 'chat-entrance',
@@ -44,7 +43,12 @@ export function configRouter (router) {
       name: 'group-management',
       component: require('./components/manager-pages/group-management-page.vue'),
       auth: true
-    },  
+    },
+    '/thanks': {
+      name: 'thanks',
+      component: require('./components/user-pages/thanks-page.vue'),
+      auth: false
+    }
   });
   router.redirect({
     '*': '/'

@@ -4,32 +4,55 @@
 		overflow: hidden;
 		position: relative;
 		border-bottom: 2px solid #EEE;
+		height: 60px;
 	}
 	.item-icon {
 		float: left;
 	}
 	.item-icon img {
-		width: 75%;
-		height: 75%;
+		width: 40px;
+		height: 50px;
+	}
+	.item-info {
+		position: relative;
+		left: 10px;
+		top: -10px;
 	}
 	.item-name {
 		padding-top: 10px;
 		font-weight: bold;
-		font-size: 1.5em;
+		font-size: 1.2em;
 	}
 	.item-size {
 		color: #ccc;
 	}
-	.item-delete {
+	.item-action {
 		position: absolute;
-		right: 40px;
-		top: 40px;
-		width: 30px;
-		height: 30px;
-		border-radius: 50%;
+		right: 0px;
+	}
+	.file-action {
+		text-align: center;
+		display: inline-block;
+		position: relative;
+		background-color: #4485F7;
+		width: 60px;
+		height: 40px;
+		line-height: 40px;
+		color: white; 
+		border-radius: 6px;
+		font-size: 1.2em;
+	}
+	button.file-action {
+		right: 10px;
+		bottom: 50px;
 		border: none;
-		background-color: #35c9e0;
-		color: white;
+	}
+	a.file-action {
+		bottom: 60px;
+		right: 50px;
+	}
+	.file-action:hover {
+		color: green;
 	}
 </style>
 
@@ -39,13 +62,12 @@
 			<img :src="format" alt="">
 		</div>
 		<div class="item-info">
-			<div class="item-name">{{file.name}}</div>
-			<div class="item-size">{{size}}</div>
+			<div class="item-name">{{file.file_name}}</div>
+			<div class="item-size">{{file.file_size | trans}}</div>
 		</div>
-		<div class="{'ui-process': true, 'show': isShow}">
-			<div class="ui-active-prog"></div>
+		<div class="item-action">
+			<a class="file-action" :href="downloadUrl" :download="file.file_name">下载</a>
 		</div>
-		<button class="item-delete" v-on:click="removeSelf">X</button>
 	</div>
 </template>
 
@@ -54,30 +76,18 @@
 import imgSrc from './imgBase64'
 
 export default {
-	props: ['file', 'index'],
-	ready() {
-		console.log(this.index);
-	},
+	props: ['file'],
 	computed: {
-		isShow: function() {
-			return this.file.progress() < 0 && this.file.progress() > 1;
-		},
-		size: function() {
-			return this.trans(this.file.size);
-		},
-		speed: function() {
-			return this.trans(this.file.averageSpeed);
-		},
-		progress: function() {
-			return this.file.progress() * 100 + '%';
+		downloadUrl: function() {
+			return '/api/share/download?file_id=' + this.file.file_id
 		},
 		format: function() {
-			var pos = this.file.name.indexOf('.');
-			var str = this.file.name.substring(pos+1);
+			var pos = this.file.file_name.indexOf('.');
+			var str = this.file.file_name.substring(pos+1);
 			return imgSrc[str];	
-		}
+		},
 	},
-	methods: {
+	filters: {
 		trans: function(size){
 			var MB = 1000 * 1000, KB =1000;
 			if(+size > MB) {
@@ -88,9 +98,6 @@ export default {
 				return size + 'B';
 			}
 		},
-		removeSelf: function() {
-			this.$dispatch('remove', this.index);
-		}
 	}
 }
 </script>

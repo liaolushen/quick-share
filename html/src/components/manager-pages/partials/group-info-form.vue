@@ -1,7 +1,8 @@
 <template>
 	<div class="groups">	
-		<group title="群名称">
-			<x-input title="" :value.sync='form.room_name' disabled></x-input>
+		<group title="群名称">		
+			<cell v-if="form.room_name !== '' " :title="form.room_name"></cell>
+			<x-input v-if="form.room_name === ''" :value.sync="form.room_name"></x-input>			
 		</group>
 		<group title="群介绍">
 			<x-textarea :value.sync="form.description" :max="300" :show-counter="false"></x-textarea>
@@ -106,7 +107,6 @@ export default {
 	  		};
 	  		var err = validator.group_info(room);
 	  		if(!err) {
-	  			console.log(room);
 	  			networkApi.createRoom(this, "POST", room)
 	  				.then(() => {
 	  					router.go({name: "home"})

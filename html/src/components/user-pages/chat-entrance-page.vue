@@ -1,4 +1,3 @@
-
 <style scoped>
 .enter-page {
 	background-color: #EEFFFF;
@@ -72,20 +71,14 @@
 
 <script>
 import {XButton, XInput} from 'vux'
-import { setName, setId, receiveMessages, receiveMembers, setCurRoom } from './../../vuex/actions'
-import { getCurRoom } from './../../vuex/getters'
+import { setName, setId, setRole, receiveMessages, receiveMembers, setCurRoom, receiveFiles } from './../../vuex/actions'
+import { getCurRoom, getId } from './../../vuex/getters'
 import { networkApi } from './../../api/networkApi'
 import { util } from './../../api/util'
 
 export default {
 	data() {
 		return {
-			username: ''
-/*			room: {
-				name: '123123',
-				start_time: 1463939797682,
-				end_time: 1463939797682
-			}*/
 		}
 	},
 	filters: {
@@ -115,6 +108,9 @@ export default {
 						return networkApi.getMessages(this, 'GET', this.$route.params.room_id, 100);
 					})
 					.then(() => {
+						return networkApi.getFiles(this, 'GET', this.$route.params.room_id)
+					})
+					.then(() => {
 						console.log('router');
 						router.go({name: 'room', params: {room_id: this.$route.params.room_id}});
 					})
@@ -130,14 +126,17 @@ export default {
 	},
 	vuex: {
 		getters: {
-			room: getCurRoom
+			room: getCurRoom,
+			id: getId
 		},
 		actions: {
 			setName,
 			setId,
+			setRole,
 			receiveMessages, 
 			receiveMembers,
-			setCurRoom
+			setCurRoom,
+			receiveFiles
 		}
 	},
 	created: function() {
@@ -147,7 +146,6 @@ export default {
 			})
 	},
 	ready() {
-		//cookie暂时不考虑,messages, members, id, name
 		console.log('chat-entrance')
 		if(this.$route.params.room_id) {
 			console.log(this.$route.params.room_id);
@@ -158,6 +156,9 @@ export default {
 				})
 				.then(() => {
 					return networkApi.getMessages(this, 'GET', this.$route.params.room_id, 100);
+				})
+				.then(() => {
+						return networkApi.getFiles(this, 'GET', this.$route.params.room_id)
 				})
 				.then(() => {
 					//成功直接跳到聊天界面

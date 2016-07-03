@@ -39,7 +39,6 @@ module.exports = {
   data() {return {}},
   store: store,
   ready: () => {
-    console.log(store.state.id)
     if(socket) {
       $(window).on('beforeunload', function() {
         if(socket) {
@@ -48,7 +47,7 @@ module.exports = {
       })
     }
     router.beforeEach((transition) => {
-      if (transition.to.auth && !store.state.id) {
+      if (transition.to.auth && !store.state.user.id) {
         transition.redirect('/');
       } else {
         console.log(transition);

@@ -4,14 +4,17 @@ import * as types from './mutation-types'
 export default {
 	//string; id = '1'
 	[types.SET_ID] (state, id) {
-		state.id = id;
+		state.user.id = id;
 	},
 
 	//string; username = 'luxi'
 	[types.SET_NAME] (state, name) {
-		state.name = name;
+		state.user.name = name;
 	},
 
+	[types.SET_ROLE] (state, role) {
+		state.user.role = role
+	},
 	//obj; room = {end_time: , room_id: , room_name: , start_time:}
 	[types.ADD_ROOM] (state, room) {
 		addRoom(state, room);
@@ -50,8 +53,10 @@ export default {
 
 	//Array: members = [{},{}]
 	[types.RECEIVE_MEMBERS] (state, members) {
+		state.members = [];
 		members.forEach(function (member) {
-			addMember(state, member);
+			if(member.uid)
+				addMember(state, member);
 		});
 	},
 
@@ -62,6 +67,7 @@ export default {
 
 	//array: messages = 
 	[types.RECEIVE_MESSAGES] (state, messages) {
+		state.messages = [];
 		messages.forEach(function (message) {
 			state.messages.push(message);
 		});
@@ -70,6 +76,27 @@ export default {
 	//obj: message = {}
   [types.SEND_MESSAGE] (state, message) {
     state.messages.push(message);
+  },
+
+  //array: files = [{file_format: , file_name: , file_size: , file_id:}]
+  [types.ADD_FILE] (state, file) {
+  	state.files.push(file)
+  },
+
+  [types.RECEIVE_FILES] (state, files) {
+  	state.files = files
+  },
+
+  [types.RESET] (state) {
+  	state.user = {
+  		name: null,
+  		id: null,
+  		role: null
+  	};
+  	state.rooms = [];
+  	state.room = null;
+  	state.messages = [];
+  	state.files = [];
   }
 }
 
@@ -79,6 +106,16 @@ function leaveRoom(state) {
 	state.members = [];
 }
 
+function delMember(state, member) {
+	console.log('mutaions')
+	console.log(state.members)
+	for(var i = 0, len = state.members.length; i < len; i++) {
+		if(member.uid == state.members[i].uid) {
+			state.members.splice(i, 1);
+		}
+	}
+}
+
 function addRoom(state, room) {
 	var isExist = false;
 	state.rooms.forEach(function (post) {
@@ -86,6 +123,7 @@ function addRoom(state, room) {
 			isExist = true;
 		}
 	});
+	console.log(room)
 	if(!isExist) {
 		state.rooms.push(room);
 	}

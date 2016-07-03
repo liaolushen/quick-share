@@ -1,12 +1,17 @@
 <style scoped>
-#file-list {
-	width: 90%;
-	background-color: white;
-	margin: 10px auto 0 auto;
-	border: 1px solid #EEE;
-	border-radius: 6px;
+
+#file-list{
+	padding-top: 10px;
+	padding-left: 10px;
+	border-top: 10px solid #EEE;
+	border-bottom: 10px solid #EEE;
 }
-	
+
+#uploading-file-list {
+	padding-top: 10px;
+	padding-left: 10px;
+}
+
 #browse {
 	width: 90%;
 	display: block;
@@ -21,7 +26,12 @@
 <template>
 	<div id="file-area">
 		<div id="file-list">
-			<file-list v-ref:files></file-list>
+			<h3>文件列表</h3>
+			<file-list></file-list>
+		</div>
+		<div id="uploading-file-list">
+			<h3>上传区域</h3>
+			<uploading-file-list></uploading-file-list>
 		</div>
 		<div id="file-btn">
 			<button id="browse">选择文件上传</button>
@@ -31,36 +41,29 @@
 
 <script>
 
-import FileList from './../../FileList';
+import FileList from './../../FileList'
+import UploadingFileList from './../../UploadingFileList'
+import { addFile } from "./../../../vuex/actions"
+import { getFiles } from "./../../../vuex/getters"
 
 export default {
 	data() {
 		return {}
 	},
-	ready() {
-		var flow = new Flow({
-  		target: '/upload', // target path
-  		simultaneousUploads: 1,
-  		query: {
-    		groupCode: Date.now()
-  		}
-		});
-		var that = this;
-		flow.assignBrowse(document.getElementById('browse'));
-		flow.assignDrop(document.getElementById('file-area'));
-		flow.on('fileAdded', function(file, event){
-    	that.$refs.files.add(file);
-		});
-		flow.on('filesSubmitted', function(file, event) {
-  		flow.upload();
-		});
-		flow.on('fileSuccess', function(file,message){
-		});
-		flow.on('fileError', function(file, message){
-		});
+	vuex: {
+		getters: {
+			getFiles
+		},
+		actions: {
+			addFile
+		}
 	},
 	components: {
-		FileList
+		FileList,
+		UploadingFileList
+	},
+	ready() {
+		flow.assignBrowse(document.getElementById('browse'));
 	}
 }
 </script>

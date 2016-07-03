@@ -6,6 +6,9 @@ export const setId = ({ dispatch }, id) => {
 export const setName = ({ dispatch }, name) => {
 	dispatch('SET_NAME', name);
 }
+export const setRole = ({ dispatch }, role) => {
+	dispatch('SET_ROLE', role)
+}
 
 export const createRoom = ({ dispatch }, room) => {
 	dispatch('ADD_ROOM', room);
@@ -45,7 +48,7 @@ export const receiveMembers = ({ dispatch }, members) => {
 	dispatch('RECEIVE_MEMBERS', members);
 }
 
-export const recieveMessage = ({ dispatch }, message) => {
+export const receiveMessage = ({ dispatch }, message) => {
 	dispatch("RECEIVE_MESSAGE", message)
 }
 
@@ -55,4 +58,17 @@ export const receiveMessages = ({ dispatch }, messages) => {
 
 export const sendMessage = ({ dispatch }, message) => {
   dispatch('SEND_MESSAGE', message);
-};
+}
+
+//file
+export const addFile = ({ dispatch }, file) => {
+	dispatch('ADD_FILE', file);
+}
+
+export const receiveFiles = ({dispatch}, files) => {
+	dispatch('RECEIVE_FILES', files);
+}
+
+export const reset = ({ dispatch }) => {
+	dispatch('RESET');
+}
